@@ -1,0 +1,33 @@
+
+
+<section class="bg-[#EDE8FF99] py-12 pt-18 px-4 sm:px-6 lg:px-20 flex flex-col lg:flex-row items-center gap-10 text-right">
+
+        <!-- النص -->
+        <div class="w-full lg:w-1/2 flex flex-col text-right">
+          <!-- عنوان عن جيدير -->
+           <div *ngFor="let item of values" >
+
+             <h2 class="text-lg sm:text-xl font-bold text-gray-800 mb-3 border-r-4 border-[#6E5EA9] pr-3 sm:pr-4">
+               {{item.title.ar}}</h2>
+               <p class="text-gray-700 mb-6 ps-4 leading-loose text-sm sm:text-base">
+                {{item.description.ar}}                </p>
+              </div>
+    
+      
+       <button routerLink="/about"
+  class="mt-4 px-6 py-2 w-[25%] me-auto cursor-pointer text-white bg-[#6E5EA9] rounded-md transition-all duration-300
+         hover:bg-[#5A4C91] hover:scale-105 hover:shadow-lg active:scale-95">
+  انقر للمزيد
+</button>
+
+        </div>
+      <!-- الصورة -->
+      <div class="relative w-full lg:w-1/2 flex justify-center">
+        <div class="rounded-[2rem] overflow-hidden">
+          <img src="assets/images/personimages.png" alt="شخص يستخدم الجوال" class="w-full object-cover" />
+        </div>
+      </div>
+    
+    
+    </section>
+    

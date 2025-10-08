@@ -1,0 +1,14 @@
+
+
+<div *ngIf="loading">
+    <app-loading></app-loading>
+  </div>
+<div *ngIf="!loading">
+    <app-home-main/>
+    <app-home-about [values]="homeData.our_value"/>
+    <app-homeconsulting-section [partners]="homeData.consultant_images"/>
+    <!-- <app-fields-section/> -->
+    <app-featured-experts [experts]="homeData.consultant"/>
+    <app-jadeer-features [features]="homeData.feature"/>
+    <app-jadeer-download id="downloadSection" />
+  </div>

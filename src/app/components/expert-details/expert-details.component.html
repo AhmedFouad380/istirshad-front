@@ -1,0 +1,110 @@
+<div *ngIf="isLoading">
+  <app-loading></app-loading>
+</div>
+
+<div *ngIf="!isLoading" class="flex flex-col items-center gap-6 p-4 md:p-6 py-10 md:py-20 sm:mt-8 mt-12">
+<div class="flex w-[60%] gap-4 items-center justify-between  py-10">
+
+  <!-- ✅ العمود الأيمن: زر ملف الخبير -->
+    <button class="bg-[#583B97] text-white py-2 px-6 rounded-md text-sm transition duration-300 hover:bg-[#574799]">
+      ملف الخبير
+    </button>
+
+  <!-- ✅ العمود الأوسط: بيانات الخبير -->
+  <div class="flex flex-col items-center gap-4 text-center">
+    <!-- صورة الخبير -->
+    <div class="bg-[#583B97] p-1 rounded-xl border border-[#231E31]">
+      <img [src]="consultant.consultant.image"
+           alt="{{ consultant.consultant.name }}"
+           class="w-40 h-40 sm:w-48 sm:h-48 object-cover rounded-lg">
+    </div>
+
+    <!-- الاسم والوصف -->
+    <h2 class="text-xl font-extrabold text-[#231E31]">{{ consultant.consultant.name }}</h2>
+    <p class="text-sm text-gray-500">{{ consultant.consultant.description }}</p>
+
+    <!-- التقييم -->
+    <div class="flex justify-center text-yellow-400 text-base">
+      <span *ngFor="let star of [1,2,3,4,5]; let i = index">
+        <ng-container *ngIf="i < consultant.consultant.rate; else emptyStar">★</ng-container>
+        <ng-template #emptyStar>☆</ng-template>
+      </span>
+    </div>
+  </div>
+
+
+
+
+    <!-- ✅ العمود الأيسر: الأزرار الجانبية -->
+  <div class="flex flex-col items-center gap-8">
+    <!-- زر مشاركة -->
+<div class="flex flex-col items-center cursor-pointer gap-2 hover:scale-105 transition"
+     (click)="copyProfileLink()">
+  <img src="assets/images/share.gif" alt="مشاركة ملفك" class="w-10" />
+  <span class="text-sm text-gray-600">مشاركة ملفك</span>
+</div>
+
+    <!-- زر الكارت الخاص -->
+    <div class="flex flex-col items-center gap-2">
+      <img src="assets/images/id-card.gif" alt="الكارت الخاص" class="w-10" />
+      <span class="text-sm text-gray-600">الكارت الخاص لك</span>
+    </div>
+  </div>
+</div>
+
+
+  <div class="bg-gradient-to-r to-[#7143F1] from-[#500CE5] text-white w-full p-6 rounded-3xl ">
+    <div class="w-[85%] mx-auto">
+
+  <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+    
+
+
+    <!-- القسم الأيمن: الوصف والعنوان -->
+    <div class="text-end">
+      <p class="font-bold text-lg">
+        خبرة {{ consultant.consultant.experience_years }} سنة في مجال القانون لدي المعرفة حول الدستور السعودي
+      </p>
+    </div>
+        <!-- القسم الأيسر: عدد الاستشارات -->
+    <div class="border-2 border-dashed bg-[#D9D9D90F] rounded-lg py-2 px-6 text-lg font-bold">
+      {{ consultant.consultant.consultations_count }} استشارة
+    </div>
+  </div>
+
+  <!-- خط فاصل -->
+  <hr class="my-4 border-white/30">
+
+  <!-- المهارات -->
+  <!-- <div class="flex flex-wrap justify-center md:justify-start gap-2 mb-6">
+    <span *ngFor="let skill of consultant.skills"
+      class="bg-[#292438] border border-white/20 rounded-md py-1.5 px-4 text-sm">
+      {{ skill }}
+    </span>
+  </div> -->
+
+  <!-- التخصصات -->
+
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <p class="text-xl">خبير في</p>
+        <div class="grid grid-cols-3 justify-center md:justify-start gap-2 mb-6">
+    <span *ngFor="let tag of consultant.consultant.categories"
+      class="bg-[#C4B4FF8C] border border-[#6E5EA9] rounded-md text-sm py-1 px-4">
+      {{ tag.title }} 
+        
+    </span>
+  </div>
+
+</div>
+
+  <!-- زر البدء -->
+  <div class="flex justify-end">
+    <button class="bg-black text-white font-bold py-2 px-6 rounded-full">
+      ابدأ الاستشارة الآن
+    </button>
+  </div>
+      </div>
+
+</div>
+
+</div>

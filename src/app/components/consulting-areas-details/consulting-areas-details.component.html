@@ -1,0 +1,317 @@
+
+
+<div *ngIf="isLoading">
+  <app-loading></app-loading>
+</div>
+
+<div *ngIf="!isLoading" class="relative w-full h-[40vh] sm:h-[50vh] bg-cover bg-center" style="background-image: url('assets/images/pic2.png');">
+  
+  <!-- Overlay غامق -->
+  <div class="absolute inset-0 bg-black/30"></div>
+
+  <!-- النصوص -->
+  <div class="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4">
+    
+    <!-- العنوان -->
+    <h1 class="text-xl md:text-3xl font-bold mb-2 flex items-center justify-center gap-2 flex-wrap">
+      <svg routerLink="/Consulting_areas" width="43" height="43" viewBox="0 0 43 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="21.0918" cy="21.0915" r="14.6639" transform="rotate(45 21.0918 21.0915)" fill="white" stroke="#171E1C" stroke-width="0.5"/>
+<path d="M27.4308 21.2277C27.7823 20.8762 27.7823 20.3064 27.4308 19.9549L21.7033 14.2273C21.3518 13.8759 20.7819 13.8759 20.4305 14.2273C20.079 14.5788 20.079 15.1487 20.4305 15.5001L25.5216 20.5913L20.4305 25.6825C20.079 26.0339 20.079 26.6038 20.4305 26.9553C20.7819 27.3067 21.3518 27.3067 21.7033 26.9553L27.4308 21.2277ZM15.3896 21.4913L26.7944 21.4913L26.7944 19.6913L15.3896 19.6913L15.3896 21.4913Z" fill="#181818"/>
+</svg>
+        مجالات الاستشارة
+
+
+    </h1>
+
+<div class="text-xs relative z-20 md:text-sm text-gray-300 flex items-center gap-1">
+  
+  <!-- رابط الرئيسية -->
+  <a 
+    routerLink="/" 
+    routerLinkActive="text-white underline" 
+    class="hover:underline hover:text-white transition"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
+    الرئيسية
+  </a>
+
+  <span>|</span>
+
+  <!-- رابط مجالات الاستشارة -->
+  <a 
+    routerLink="/Consulting_areas" 
+    routerLinkActive="text-white underline" 
+    class="hover:underline hover:text-white transition"
+  >
+    مجالات الاستشارة
+  </a>
+
+</div>
+
+
+  </div>
+
+</div>
+
+
+
+<div class="p-4 sm:p-8 relative">
+
+<div class="flex flex-col items-center justify-center text-center p-8 gap-4">
+
+  <!-- أيقونة -->
+  <div class="bg-gray-100 p-4 rounded-full flex items-center justify-center">
+    <img src={{categoryDetails?.image}} alt="icon" class="w-16 h-16" />
+  </div>
+
+  <!-- العنوان -->
+  <h1 class="text-2xl md:text-3xl font-bold text-[#6E5EA9]">
+   {{categoryDetails?.title}}
+  </h1>
+
+  <!-- الوصف -->
+  <p class="text-gray-800 text-sm md:text-base max-w-2xl">
+{{ categoryDetails?.description || '' }}  </p>
+
+  <!-- عدد الخبراء -->
+  <div class="flex items-center gap-2 bg-[#6E5EA9] text-white font-bold rounded-full py-2 px-6 mt-4">
+    
+    <span>   {{categoryDetails?.consultant_count}}
+    </span>
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A11.966 11.966 0 0112 15c2.14 0 4.13.564 5.879 1.554M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+    <span class="text-sm font-normal">خبير</span>
+  </div>
+
+</div>
+
+
+<div class="flex  lg:flex-row flex-col-reverse justify-between gap-5">
+
+  <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 w-full gap-6">
+
+<div *ngFor="let expert of consultants" 
+class="border p-4 sm:p-6 rounded-xl shadow-md flex flex-col justify-between transition-all duration-300"
+[ngClass]="isSelected(expert) ? 'bg-[#231E31] text-white' : 'bg-white text-black'"
+>
+
+      <!-- بيانات الخبير -->
+      <div class="flex items-start justify-between gap-4 mb-4 flex-col sm:flex-row">
+        
+        <!-- بيانات نصية -->
+        <div class="text-right flex gap-2.5">
+          <img   [src]="expert.image || 'assets/images/default.jpg'" 
+          alt="{{ expert.name }}" class="w-16 h-16 rounded-full object-cover border" />
+          <div>
+            <h3   [ngClass]="isSelected(expert) ? ' text-white' : ' text-gray-900'"
+            class="text-lg font-bold ">{{ expert.name }}</h3>
+            <p class=" text-sm"  [ngClass]="isSelected(expert) ? ' text-white' : ' text-gray-500'">{{ expert.experience? (expert.experience):"" }}</p>
+            <p class=" text-xs"  [ngClass]="isSelected(expert) ? ' text-white' : ' text-gray-500'">{{ expert.consultations?expert.consultations:0 }} استشارة</p>
+
+              <!-- النجوم -->
+              <div class="flex text-yellow-400 text-sm">
+                <div class="rating">
+                  <span *ngFor="let star of [1,2,3,4,5]; let i = index">
+                    <ng-container *ngIf="i < expert.rate; else emptyStar">★</ng-container>
+                    <ng-template #emptyStar>☆</ng-template>
+                  </span>
+                </div>
+              
+            </div>
+          </div>
+        </div>
+
+        <!-- الحالة -->
+        <div class="text-sm font-bold" [ngClass]="expert.is_active ? 'text-green-500' : 'text-red-600'">
+          {{ expert.is_active ? 'نشط حاليا' : 'غير نشط' }}
+        </div>
+      </div>
+
+      <!-- الوصف والتخصصات -->
+      <div class="flex justify-between">
+        <div class="flex flex-col">
+          <p class="text-sm leading-relaxed mb-4" [ngClass]="isSelected(expert) ? 'text-gray-300' : 'text-gray-600'">
+        خبرة 15 سنة في مجال القانون لدي المعرفة حول الدستور السعودي
+      </p>
+
+          <!-- التخصصات -->
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span *ngFor="let tag of expert.tags" class="border border-[#6E5EA9] bg-[#C4B4FF8C]  text-xs px-4 py-1 rounded-md transition">
+              {{ tag }}
+            </span>
+          </div>
+        </div>
+
+        <!-- أزرار -->
+        <div class="flex flex-col sm:flex-row gap-3 sm:justify-end sm:items-center w-full">
+
+          <!-- زر الإضافة / الإزالة -->
+          <button 
+            (click)="toggleExpert(expert)"
+            class="border text-xs py-2 px-4 sm:px-6 w-full sm:w-auto rounded-lg flex items-center justify-center gap-2 transition"
+            [ngClass]="isSelected(expert) 
+              ? 'hover:bg-white hover:text-black bg-black text-white' 
+              : 'hover:bg-black hover:text-white bg-white text-black'"
+          >
+            <div 
+              [ngClass]="isSelected(expert) 
+                ? 'bg-white text-black' 
+                : 'bg-black text-white'" 
+              class="p-1 rounded-full"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-2 h-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  [attr.d]="isSelected(expert) ? 'M18 6L6 18M6 6l12 12' : 'M12 4v16m8-8H4'" />
+              </svg>
+            </div>
+            {{ isSelected(expert) ? 'إزالة' : 'اضف للقائمة' }}
+          </button>
+        
+          <!-- زر ملف الخبير -->
+          <button 
+            [routerLink]="['/expert', expert.id]" 
+            class="w-full sm:w-auto text-sm py-2 px-4 sm:px-6 rounded-lg transition"
+            [ngClass]="isSelected(expert) 
+              ? 'bg-white text-black hover:bg-[#231E31] hover:text-white border' 
+              : 'bg-black text-white hover:bg-white hover:text-black border border-black'"
+          >
+            ملف الخبير
+          </button>
+        
+        </div>
+        
+      </div>
+
+    </div>
+
+
+   </div>
+   <div class="w-full lg:w-24 flex flex-col items-center gap-4 mt-6 lg:mt-0">
+    <button *ngIf="getSelectedCount() > 0" (click)="openModal()"
+      class="bg-[#6E5EA9] text-white w-full py-2 rounded-lg hover:bg-[#5B4A8B] transition">
+      إرسال الآن
+    </button>
+
+    <!-- عنوان القائمة -->
+    <div class="text-center text-gray-800 text-xs font-bold mt-2">
+      القائمة
+    </div>
+
+    <!-- عرض الصور -->
+    <div class="flex flex-wrap lg:flex-col items-center justify-center gap-2 bg-[#F5F5F5] shadow-md rounded-2xl p-2">
+      <ng-container *ngFor="let i of [0, 1, 2, 3, 4]">
+        <ng-container *ngIf="selectedExperts[i]; else emptyPlaceholder">
+          <img [src]="selectedExperts[i].image" alt="{{ selectedExperts[i].name }}"
+            class="w-10 h-10 rounded-full border object-cover" />
+        </ng-container>
+
+        <ng-template #emptyPlaceholder>
+          <div class="w-10 h-10 rounded-full bg-[#D9D9D9] flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M5.121 17.804A11.966 11.966 0 0112 15c2.14 0 4.13.564 5.879 1.554M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+        </ng-template>
+      </ng-container>
+    </div>
+  </div>
+
+
+
+
+  </div>
+
+  <div 
+  *ngIf="isModalOpen" 
+  class="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+>
+  <div class="bg-white rounded-xl p-8 w-[90%] md:w-[600px] relative shadow-xl">
+
+    <!-- زر إغلاق -->
+    <button 
+      (click)="closeModal()" 
+      class="absolute top-4 left-4 bg-[#6E5EA9] p-0.5 px-2.5  rounded-full border border-[#6E5EA9] text-white hover:text-gray-600 hover:bg-white hover:border transition">
+      x
+    </button>
+
+    <!-- عنوان المودال -->
+    <h2 class="text-center text-xl font-bold mb-6">
+      ارسال طلب <span class="text-[#6E5EA9]">استشارتك!</span>
+    </h2>
+
+        <hr class="mb-6">
+
+    <!-- الخبراء المختارين -->
+    <h2 class=" text-center mb-2 text-lg font-semibold">الخبراء</h2>
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+  <div *ngFor="let expert of selectedExperts" class="flex bg-[#231E31] p-2 rounded-md  items-center gap-2">
+    
+    <!-- صورة الخبير -->
+    <img 
+      [src]="expert.image" 
+      alt="{{ expert.name }}" 
+      class="w-10 h-10 rounded-full border border-white object-cover"
+    />
+
+    <!-- اسم الخبير -->
+    <div class="text-right text-sm font-semibold  text-white  rounded-md">
+      {{ expert.name }}
+      <!-- <div class="text-xs text-gray-400">({{ expert.experience }})</div> -->
+    </div>
+
+  </div>
+</div>
+
+
+    <hr class="mb-6">
+
+    <!-- رسالة الاستشارة -->
+     <div class="flex flex-col">
+      <div class="text-right text-sm font-bold mb-2">
+        موضوع الاستشارة
+      </div>
+  
+      <input 
+      [(ngModel)]="consultationTitle"
+
+        placeholder="اكتب اسم استشارتك هنا..."
+        class="w-full border border-gray-300 rounded-lg p-4 text-sm focus:outline-none focus:border-[#6E5EA9]"
+      >
+     </div>
+     <div class="flex flex-col mt-3">
+      <div class="text-right text-sm font-bold mb-2">
+        تفاصيل الاستشارة
+      </div>
+  
+      <textarea 
+        rows="5" 
+        [(ngModel)]="consultationDescription"
+
+        placeholder="اكتب تفاصيل استشارتك هنا..."
+        class="w-full border border-gray-300 rounded-lg p-4 text-sm focus:outline-none focus:border-[#6E5EA9]"
+      ></textarea>
+     </div>
+   
+  
+
+     <button 
+     (click)="submitConsultation()"
+     [disabled]="isSubmitting"
+     class="bg-[#6E5EA9] text-white w-full py-2 rounded-lg mt-6 hover:bg-[#5B4A8B] transition flex items-center justify-center gap-2"
+   >
+     <svg *ngIf="isSubmitting" class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+       <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+       <path class="opacity-75" fill="currentColor"
+         d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+     </svg>
+   
+     <span>{{ isSubmitting ? 'جارٍ الإرسال...' : 'إرسال' }}</span>
+   </button>
+   
+
+  </div>
+</div>
+</div>

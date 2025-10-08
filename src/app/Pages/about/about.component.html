@@ -1,0 +1,10 @@
+<div *ngIf="loading">
+    <app-loading></app-loading>
+  </div>
+<div *ngIf="!loading">
+  
+  <app-header-about [data]="aboutData?.about"/>
+<app-about-section [values]="aboutData.our_value"/>
+<app-statistics-about [statistics]="aboutData.statistics"/>
+<app-partners-section [partners]="aboutData.partners"></app-partners-section>
+</div>

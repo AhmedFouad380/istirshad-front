@@ -1,0 +1,75 @@
+<section class="px-4 md:px-20 py-16 bg-white text-right">
+    <div class="flex justify-between py-2">
+
+    <h2 class="text-2xl font-bold border-r-4 border-[#6B21A8] pr-3 mb-6 inline-block">
+      أبرز خبراء <span class="text-[#6B21A8]">جدير</span>
+    </h2>
+  
+    <!-- Controls -->
+    <div class="flex justify-start items-center gap-3 mb-6">
+      <button (click)="prev()" class="w-9 h-9 rounded-full bg-[#6B21A8] text-white text-lg hover:opacity-80">‹</button>
+      <button (click)="next()" class="w-9 h-9 rounded-full bg-[#6B21A8] text-white text-lg hover:opacity-80">›</button>
+    </div>
+</div>
+
+  
+    <!-- Expert Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <ng-container *ngFor="let expert of getVisibleExperts()">
+        <div class="bg-white rounded-xl shadow-md p-6 transition hover:bg-[#6B21A8] hover:text-white group">
+          <div class="flex items-center justify-between gap-4 mb-4">
+            <div class="flex">
+
+                <img [src]="expert.image" alt="صورة الخبير" class="w-14 h-14 rounded-full object-cover " />
+                <div class="flex flex-col">
+                    <h3 class="font-bold text-lg group-hover:text-white">{{ expert.name }}</h3>
+                    <p class="text-sm text-gray-500 group-hover:text-white">{{ expert.consultations_count }} استشارة</p>
+                </div>
+                
+            </div>
+                
+            <div class="text-sm font-bold" [ngClass]="expert.is_active ? 'text-green-500 border-b' : 'text-red-600 border-b'">
+                {{ expert.is_active ? 'نشط حاليا' : 'غير نشط' }}
+              </div>
+          </div>
+  
+          <!-- Rating -->
+          <div class="mb-2 flex items-center gap-1">
+            <!-- Full Stars -->
+            <span *ngFor="let _ of getFullStars(expert.rate)" class="text-yellow-500">★</span>
+          
+            <!-- Half Star -->
+            <span *ngIf="hasHalfStar(expert.rate)" class="text-yellow-500">⯨</span> <!-- أو استخدم أي أيقونة نص نجمة تحبها -->
+          
+            <!-- Empty Stars -->
+            <span *ngFor="let _ of getEmptyStars(expert.rate)" class="text-gray-300">★</span>
+          </div>
+          
+  
+          <!-- Description -->
+          <p class="text-sm mb-4 group-hover:text-white">{{ expert.description }}</p>
+        
+      <!-- Tags and Button -->
+<div class="grid grid-cols-12  gap-3 justify-between items-start">
+  <!-- Tags -->
+  <div class="col-span-8 flex flex-wrap gap-2 items-center">
+    <span *ngFor="let tag of expert.categories"
+          class="px-2 py-1 text-[12px] font-semibold rounded-full border border-[#6B21A8] text-[#6B21A8] bg-[#C4B4FF8C] group-hover:text-white group-hover:border-white  group-hover:bg-transparent">
+      {{ tag.title }}
+    </span>
+  </div>
+
+  <!-- Expert Profile Button -->
+  <div class="flex justify-end col-span-4 ">
+    <button [routerLink]="['/expert', expert.id]"
+            class="border bg-[#231E31] border-white text-white text-sm py-2  px-4 rounded-md hover:bg-purple-50 hover:text-black transition">
+      ملف الخبير
+    </button>
+  </div>
+</div>
+
+        </div>
+      </ng-container>
+    </div>
+  </section>
+  

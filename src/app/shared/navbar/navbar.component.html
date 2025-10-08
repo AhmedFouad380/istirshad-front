@@ -1,0 +1,142 @@
+<nav
+  [ngClass]="
+    isProfileOrHomePage
+      ? (isScrolled ? 'bg-black/80 text-white' : 'bg-transparent text-black')
+      : (isScrolled || isExpertPage
+          ? 'bg-black/80 text-white'
+          : 'bg-transparent text-white')
+  "
+  class="grid grid-cols-3 lg:grid-cols-12 gap-4  items-center  justify-between px-4 md:px-8 py-1.5  fixed top-0 right-0 left-0 z-50 transition-all duration-300"
+>
+<!-- Logo -->
+ 
+<div routerLink="/" class="cursor-pointer lg:col-span-2 col-span-1">
+  <img [src]="'assets/images/logo.png'" alt="Logo" class="lg:w-[35%]  md:w-[30%] sm:w-[30%] " />
+</div>
+<div class="flex gap-4 justify-end items-center col-span-2 lg:hidden">
+  <div       #notificationBox
+  class="lg:hidden relative z-30" *ngIf="isLoggedIn">
+    <!-- notifications -->
+    <button (click)="toggleNotifications()" class="relative bg-[#583B97] rounded-lg p-1">
+      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405C18.195 15.195 18 14.105 18 13V9a6 6 0 10-12 0v4c0 1.105-.195 2.195-.595 3.595L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+      </svg>
+      <span *ngIf="notidicationsData?.length" class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-[#FF7D7D] rounded-full"></span>
+    </button>
+    <div
+      *ngIf="showNotifications"
+    class="absolute top-10 left-0 w-64 max-h-72 overflow-y-auto  bg-white shadow rounded p-3 z-50 "
+  >
+            <div *ngIf="notidicationsData?.length; else noNotifs">
+          <div *ngFor="let n of notidicationsData" class="border-b border-b-gray-100 py-2 text-sm">
+            <strong class="text-black">{{ n.title }}</strong><br />
+            <span class="text-black">{{ n.description }}</span>
+          </div>
+        </div>
+        <ng-template #noNotifs>
+          <p class="text-gray-500 text-sm">لا توجد إشعارات جديدة</p>
+        </ng-template>
+      </div>
+  </div>
+  
+  <!-- Hamburger menu (mobile only) -->
+  <button class="lg:hidden text-3xl" (click)="toggleMenu()">
+    ☰
+  </button>
+  
+</div>
+  <!-- الروابط (desktop) -->
+  <ul class="hidden lg:flex items-center justify-center gap-3 text-[15px] font-light lg:col-span-8">
+    <li><a routerLink="/" routerLinkActive="font-bold" class="hover:underline" [routerLinkActiveOptions]="{ exact: true }">الرئيسية</a></li>
+    <li><a routerLink="/about" routerLinkActive="font-bold" class="hover:underline">من نحن</a></li>
+    
+    <li *ngIf="user?.type !== 'consultant'"><a routerLink="/Consulting_areas" routerLinkActive="font-bold" class="hover:underline">مجالات الاستشارة</a></li>
+    <li><a routerLink="/Contact_us" routerLinkActive="font-bold" class="hover:underline">اتصل بنا</a></li>
+    <li>
+      <a routerLink="/FQA" routerLinkActive="font-bold" class="hover:underline flex items-center gap-1">
+        الأسئلة الشائعة
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9 2a7 7 0 100 14A7 7 0 009 2zM8 4h2v5H8V4zm0 6h2v2H8v-2z" />
+        </svg>
+      </a>
+    </li>
+    <li (click)="goToDownload()" class="cursor-pointer">
+      <a class="bg-[#583B97] text-white rounded-full p-0.5 px-4 flex items-center gap-1">
+        تحميل التطبيق
+        <svg width="14" height="14" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.3218 6H9.67494V10.0985L11.5389 8.18769C11.6739 8.04923 11.845 7.98462 12.0161 7.98462C12.1872 7.98462 12.3583 8.04923 12.4933 8.18769C12.7545 8.45538 12.7545 8.89846 12.4933 9.16615L9.47684 12.2585C9.21571 12.5262 8.78349 12.5262 8.52236 12.2585L5.50586 9.16615C5.24473 8.89846 5.24473 8.45538 5.50586 8.18769C5.76699 7.92 6.19921 7.92 6.46034 8.18769L8.32427 10.0985V6H4.67745C1.79601 6 -0.00488281 7.84615 -0.00488281 10.8V13.1908C-0.00488281 16.1538 1.79601 18 4.67745 18H13.3128C16.1942 18 17.9951 16.1538 17.9951 13.2V10.8C18.0041 7.84615 16.2032 6 13.3218 6Z" fill="white"/>
+          <path d="M9.99512 0.642857C9.99512 0.291429 9.54178 0 8.99512 0C8.44845 0 7.99512 0.291429 7.99512 0.642857V6H9.99512V0.642857Z" fill="white"/>
+          </svg>
+      </a>
+    </li>
+  </ul>
+
+  <!-- حساب المستخدم -->
+   
+  <div  #notificationBoxDEs class="hidden lg:flex items-center justify-end gap-3 relative lg:col-span-2">
+
+    <button (click)="toggleNotifications()" class="relative bg-[#583B97] rounded-lg p-1">
+      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405C18.195 15.195 18 14.105 18 13V9a6 6 0 10-12 0v4c0 1.105-.195 2.195-.595 3.595L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+      </svg>
+      <span *ngIf="notidicationsData?.length" class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-[#FF7D7D] rounded-full"></span>
+    </button>
+    <div
+      *ngIf="showNotifications"
+    class="absolute top-10 left-0 w-64 max-h-72 overflow-y-auto  bg-white shadow rounded p-3 z-50 "
+  >
+            <div *ngIf="notidicationsData?.length; else noNotifs">
+          <div *ngFor="let n of notidicationsData" class="border-b border-b-gray-100 py-2 text-sm">
+            <strong class="text-black">{{ n.title }}</strong><br />
+            <span class="text-black">{{ n.description }}</span>
+          </div>
+        </div>
+        <ng-template #noNotifs>
+          <p class="text-gray-500 text-sm">لا توجد إشعارات جديدة</p>
+        </ng-template>
+      </div>
+
+    <ng-container *ngIf="isLoggedIn; else loginButton">
+      <div (click)="goToProfile()" class="flex items-center gap-2 cursor-pointer">
+        <span>حسابي</span>
+        <img [src]="userImage || 'assets/images/Ellipse 4.png'" class="w-8 h-8 rounded-full" />
+      </div>
+    </ng-container>
+
+    <ng-template #loginButton>
+      <button (click)="goToLogin()" class="text-sm px-3 py-1 rounded-md bg-[#583B97] text-white">
+        تسجيل دخول
+      </button>
+    </ng-template>
+
+  </div>
+</nav>
+
+<!-- القائمة المنسدلة للجوال -->
+<div
+  *ngIf="isMenuOpen"
+  class="md:hidden fixed top-[56px] right-0 left-0 bg-white text-black shadow-lg z-40 px-4 py-4 space-y-4"
+>
+  <ul class="flex flex-col gap-4 text-sm">
+    <li><a routerLink="/" (click)="closeMenu()">الرئيسية</a></li>
+    <li><a routerLink="/about" (click)="closeMenu()">من نحن</a></li>
+    <li *ngIf="user?.type !== 'consultant'"><a routerLink="/Consulting_areas" (click)="closeMenu()">مجالات الاستشارة</a></li>
+    <li><a routerLink="/Contact_us" (click)="closeMenu()">اتصل بنا</a></li>
+    <li><a routerLink="/FQA" (click)="closeMenu()">الأسئلة الشائعة</a></li>
+    <li class="cursor-pointer" (click)="goToDownload()"><a class="bg-[#583B97] text-white p-2 rounded-full w-fit px-4  flex items-center gap-1">تحميل التطبيق</a></li>
+  </ul>
+
+  <div class="border-t pt-4 mt-4">
+    <ng-container *ngIf="isLoggedIn; else mobileLogin">
+      <div (click)="goToProfile()" class="flex items-center gap-2 cursor-pointer">
+        <span>حسابي</span>
+        <img [src]="userImage || 'assets/images/Ellipse 4.png'" class="w-8 h-8 rounded-full" />
+      </div>
+    </ng-container>
+    <ng-template #mobileLogin>
+      <button (click)="goToLogin()" class="w-full text-sm px-3 py-2 rounded-md bg-[#583B97] text-white">
+        تسجيل دخول
+      </button>
+    </ng-template>
+  </div>
+</div>

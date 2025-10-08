@@ -1,0 +1,52 @@
+<section class="relative pt-28 w-[85%] mx-auto px-4 sm:px-6 lg:px-20 text-center  overflow-hidden">
+  <div class="flex flex-col lg:flex-row items-center justify-center gap-x-10 ">
+    <div class="lg:w-1/2 text-right flex flex-col items-center lg:items-start relative z-10 gap-2">
+      <h2 class="text-2xl md:text-3xl font-bold text-gray-800  ">
+        <!-- <span class="bg-gray-900  text-white px-4  rounded">جدير</span> -->
+        {{ slides[currentIndex].title }}
+      </h2>
+      <p class="text-sm mt-4 md:text-base text-justify text-[#231E31] max-w-md leading-relaxed">
+        {{ slides[currentIndex].description }}
+      </p>
+
+<button
+  *ngIf="slides[currentIndex].action === 'link'; else downloadBtn"
+  [routerLink]="slides[currentIndex].buttonLink"
+  class="mt-6 bg-[#583B97] hover:bg-[#483b63] cursor-pointer text-white px-6 py-2 rounded 
+         transition-all duration-300 hover:scale-105 hover:shadow-md active:scale-95">
+  {{ slides[currentIndex].buttonText }}
+</button>
+
+<ng-template #downloadBtn>
+  <button
+    (click)="goToDownload()"
+    class="mt-6 bg-[#583B97] hover:bg-[#483b63] cursor-pointer text-white px-6 py-2 rounded 
+           transition-all duration-300 hover:scale-105 hover:shadow-md active:scale-95">
+    {{ slides[currentIndex].buttonText }}
+  </button>
+</ng-template>
+
+
+  <div class="flex justify-center mt-6 gap-2">
+    <div
+          *ngFor="let _ of slides; let i = index"
+      class="h-1.5 rounded-xl cursor-pointer transition-all duration-300"
+      [ngClass]="{
+        'w-8 bg-[#583B97]': i === currentIndex,
+        'w-4 bg-gray-300': i !== currentIndex
+      }"
+      (click)="goToSlide(i)">
+    </div>
+  </div>
+
+    </div>
+    <div class="relative w-full flex justify-end ">
+      <img         [src]="slides[currentIndex].image"
+[alt]="slides[currentIndex].title" class="w-full object-contain transition-opacity duration-700 relative z-20" />
+
+    </div>
+ 
+  </div>
+
+
+</section>

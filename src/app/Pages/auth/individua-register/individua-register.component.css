@@ -1,0 +1,32 @@
+::ng-deep .ng-select.ng-select-custom {
+  border: 1px solid #d1d5db; /* إطار خفيف رمادي */
+  border-radius: 0.5rem; /* زوايا مدورة */
+  font-size: 14px; /* حجم خط مناسب */
+  min-height: 48px; /* ارتفاع مناسب */
+  padding: 0.5rem 1rem; /* مسافات داخلية */
+  background-color: #fff; /* خلفية بيضاء */
+}
+
+::ng-deep .ng-select.ng-select-custom .ng-select-container {
+  min-height: 48px;
+  align-items: center;
+  display: flex;
+}
+
+::ng-deep .ng-select.ng-select-custom .ng-select-container .ng-value-container {
+  text-align: right; /* خلي الكتابة يمين */
+}
+
+::ng-deep .ng-select.ng-select-custom .ng-select-container .ng-placeholder {
+  color: #9ca3af; /* لون الـ placeholder */
+}
+
+::ng-deep .ng-select.ng-select-custom .ng-option {
+  text-align: right; /* النص داخل القائمة على اليمين */
+}
+
+::ng-deep .ng-select.ng-select-custom .ng-dropdown-panel {
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}

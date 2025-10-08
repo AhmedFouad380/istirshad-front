@@ -1,0 +1,33 @@
+<h2 class="text-center font-bold text-lg border-b pb-2 mb-6">العناية بالعملاء</h2>
+
+<ng-container *ngFor="let report of reports">
+  <!-- رسالة من المستخدم -->
+  <div  class="bg-gray-100 p-4 rounded mb-6 relative">
+    <!-- التاريخ -->
+    <div
+      class="bg-[#6E5EA9] absolute -top-3 left-10 text-white text-xs px-3 py-1.5 rounded w-fit"
+    >
+    {{ report.date || 'غير محدد' }}
+  </div>
+
+    <div class="flex flex-col gap-4 pt-2 px-4">
+      <p class="text-sm text-right font-bold text-gray-600">
+        {{ report.type || 'نوع غير معروف' }}
+      </p>
+      <p class="text-right text-sm leading-relaxed text-gray-800">
+        {{ report.title || 'بدون عنوان' }}
+      </p>
+      <p class="text-right text-sm leading-relaxed text-gray-800">
+        {{ report.description || 'لا يوجد وصف' }}
+      </p>
+    </div>
+  </div>
+
+  <!-- رسالة من الدعم -->
+  <div *ngIf="report.replay" class="bg-white/60 shadow-2xl p-4 rounded mb-6">
+    <p class="text-right text-sm leading-relaxed text-gray-800 mb-4">
+      {{ report.replay }}
+    </p>
+    <img [src]="settings.logo" class="w-24 h-auto ml-auto" />
+  </div>
+</ng-container>

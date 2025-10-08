@@ -1,0 +1,52 @@
+<div *ngIf="isLoading">
+  <app-loading></app-loading>
+</div>
+
+<div *ngIf="!isLoading" class="w-[90%] sm:w-[85%] mx-auto p-4 sm:p-8">
+  <!-- Title -->
+  <div class="flex items-center justify-center mb-8">
+    <!-- Purple Line -->
+    <div class="w-1 h-5 bg-[#6E5EA9] ml-4"></div>
+
+    <!-- Title Text -->
+    <h2 class="text-xl sm:text-2xl font-bold text-gray-900">اختر مجال الاستشارة</h2>
+  </div>
+
+  <!-- Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6">
+    
+    <!-- Card -->
+    <div *ngFor="let item of services" class="border border-purple-200 p-5 sm:p-6 rounded-lg hover:shadow-md transition flex flex-col justify-between h-full">
+      
+      <div class="flex items-center justify-between mb-6">
+        <img [src]="item.image" alt="icon" class="w-10 h-10 bg-[#F0EFF2] rounded-full sm:w-12 sm:h-12">
+        <div class="bg-[#6E5EA9] text-white flex items-center gap-1 px-5 py-1.5 sm:px-6 sm:py-2 rounded-full text-xs sm:text-sm font-semibold">
+          <span>{{ item.consultant_count }}</span>
+          <span>خبير</span>
+        </div>
+      </div>
+
+      <!-- Description Section -->
+      <div class="text-right space-y-3">
+        <!-- Title -->
+        <h3 class="text-base sm:text-lg font-bold text-gray-800">{{ item.title }}</h3>
+
+        <!-- Description + Button -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+         
+          <p
+class="text-gray-500 text-sm leading-relaxed sm:w-[60%]"  
+  [innerHTML]="item.description">
+</p>
+
+          <!-- Button -->
+          <button [routerLink]="['/Consulting_areas', item.id]"
+            class="border border-purple-300 text-purple-300 text-xs sm:text-sm py-1 px-4 rounded-full hover:bg-purple-50 transition w-fit self-start sm:self-auto">
+            اكتشف المزيد ←
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

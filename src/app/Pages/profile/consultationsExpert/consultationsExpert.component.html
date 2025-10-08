@@ -1,0 +1,171 @@
+<!-- الاستشارات -->
+<h2 class="text-center font-bold text-lg border-b pb-2 mb-6">الاستشارات</h2>
+
+<!-- Tabs -->
+<div class="flex flex-wrap justify-center gap-2 sm:gap-4 mb-6 text-center">
+  <button class="px-4 py-2 rounded font-semibold"
+    [ngClass]="activeTab === 'pending' ? 'bg-[#6E5EA9] text-white' : 'bg-gray-200 text-gray-700'"
+    (click)="changeTab('pending')">
+    الاستشارات القادمة
+  </button>
+  <button class="px-4 py-2 rounded font-semibold"
+    [ngClass]="activeTab === 'accepted' ? 'bg-[#6E5EA9] text-white' : 'bg-gray-200 text-gray-700'"
+    (click)="changeTab('accepted')">
+    الاستشارات الجارية
+  </button>
+  <button class="px-4 py-2 rounded font-semibold"
+    [ngClass]="activeTab === 'completed' ? 'bg-[#6E5EA9] text-white' : 'bg-gray-200 text-gray-700'"
+    (click)="changeTab('completed')">
+    الاستشارات المنتهية
+  </button>
+</div>
+
+<!-- Loading -->
+<div *ngIf="loading">
+  <app-loading></app-loading>
+</div>
+
+<!-- Error -->
+<div *ngIf="error && !loading" class="text-center py-8 text-red-500">
+  {{ error }}
+</div>
+
+<!-- Consultations Grid -->
+<div *ngIf="!loading && !error" class="grid grid-cols-1 gap-4">
+  <ng-container *ngFor="let c of consultations">
+    <div *ngIf="(activeTab === 'pending' && c.status === 'قيد الانتظار') || 
+                 (activeTab === 'accepted' && c.status === 'جاري') || 
+                 (activeTab === 'completed' && c.status === 'منتهية')"
+      class="bg-white shadow rounded-lg p-4 sm:p-6 flex flex-col gap-4 md:flex-row justify-between">
+
+      <!-- Expert Info -->
+      <div class="flex items-center gap-3">
+        <img [src]="c.image" alt="consultant" class="w-12 h-12 rounded-full object-cover" />
+        <div>
+          <h4 class="text-sm font-bold text-black">{{ c.user.name }}</h4>
+          <div *ngIf="c.consultationData" class="flex flex-col gap-1 mt-1">
+            <div class="text-xs bg-[#F1F1F1] text-[#1D1734] font-bold px-3 py-1 rounded-full">
+              🕒 {{ c.start_time }}
+            </div>
+            <div class="text-xs bg-[#6E5EA9] text-white font-bold px-3 py-1 rounded-full">
+              📅 {{ c.start_date }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Consultation Details -->
+      <div class="flex-1">
+        <h3 class="text-[#6E5EA9] font-semibold text-sm mb-2">{{ c.title }}</h3>
+        <div class="flex flex-wrap gap-2 mb-2">
+          <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded text-xs font-semibold">
+            {{ c.category }}
+          </span>
+        </div>
+        <h3 class="text-[#6E5EA9] font-semibold text-sm mb-1">تفاصيل الاستشارة</h3>
+        <p class="text-sm text-[#231E31] leading-relaxed">
+          {{ c.consultationDescription || 'لا يوجد وصف متاح' }}
+        </p>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex flex-col gap-3">
+        <ng-container *ngIf="activeTab === 'pending'; else showStatus">
+          <button (click)="approveConsultation(c.id)"
+            class="text-sm border border-black text-[#1D1734] py-2 px-4 rounded font-bold hover:bg-[#1D1734] hover:text-white">
+            قبول الطلب
+          </button>
+          <button (click)="rejectConsultation(c.id)"
+            class="text-sm bg-[#C8102E] text-white py-2 px-4 rounded font-bold hover:bg-[#a00c23]">
+            رفض الطلب
+          </button>
+        </ng-container>
+        <ng-template #showStatus>
+          <button [ngClass]="{
+            'bg-[#231E31] text-white hover:bg-gray-800': c.status === 'جاري',
+            'bg-[#FECACA] text-[#991B1B] hover:bg-[#fca5a5]': c.status === 'منتهية',
+            'bg-yellow-100 text-yellow-800': c.status === 'قيد الانتظار'
+          }" class="text-sm py-2 px-4 rounded-lg">
+            {{ c.status }}
+          </button>
+          <button (click)="goToChat(c.id)"
+            class="border text-xs py-2 px-4 rounded-lg flex items-center gap-2"
+            [ngClass]="{
+              'border-white': activeTab === 'completed',
+              'border-gray-300': activeTab !== 'completed'
+            }">
+            رؤية التفاصيل
+          </button>
+        </ng-template>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Empty -->
+  <div *ngIf="consultations.length === 0" class="text-center py-8 text-gray-500">
+    لا توجد استشارات متاحة
+  </div>
+</div>
+
+<!-- Schedule Popup -->
+<div *ngIf="showSchedulePopup" class="fixed inset-0 bg-black/15 flex justify-center items-center z-50 px-4">
+  <div class="bg-white rounded-lg p-6 w-full max-w-3xl">
+    <h2 class="text-center bg-purple-500 text-white py-2 rounded text-lg font-bold mb-4">
+      📅 تحديد موعد الجلسة
+    </h2>
+
+    <div class="flex flex-col md:flex-row gap-6">
+      <!-- Calendar -->
+      <div class="flex-1">
+        <div class="text-center mb-3">
+          <div class="inline-flex gap-4 items-center justify-center">
+            <button (click)="changeMonth(-1)">&lt;</button>
+            <div class="bg-gray-100 px-6 py-2 rounded font-bold">{{ currentMonth }}</div>
+            <button (click)="changeMonth(1)">&gt;</button>
+          </div>
+        </div>
+        <div class="grid grid-cols-7 text-center font-semibold mb-2 text-sm text-gray-600">
+          <div *ngFor="let day of daysOfWeek">{{ day }}</div>
+        </div>
+        <div class="grid grid-cols-7 gap-1 text-center text-sm">
+          <div *ngFor="let blank of blankDays" class="py-2"></div>
+          <div *ngFor="let day of daysInMonth" (click)="selectDay(day)"
+            [class.bg-purple-500]="day === selectedDay" [class.text-white]="day === selectedDay"
+            class="py-2 cursor-pointer hover:bg-purple-100 rounded-full">
+            {{ day }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Time Picker -->
+      <div class="flex-1 text-center">
+        <h3 class="font-bold text-lg mb-4">التوقيت</h3>
+        <div class="relative mx-auto w-32 h-32 rounded-full border-4 border-purple-500 mb-4">
+          <div class="absolute w-full h-full">
+            <div class="absolute top-1/2 left-1/2 w-3 h-3 -ml-1.5 -mt-1.5 bg-purple-700 rounded-full z-10"></div>
+            <div class="absolute top-1/2 left-1/2 w-1 h-10 -ml-0.5 -mt-10 bg-purple-700 rounded-full origin-bottom transform"
+              [ngStyle]="clockStyle.hour"></div>
+            <div class="absolute top-1/2 left-1/2 w-1 h-16 -ml-0.5 -mt-16 bg-purple-500 rounded-full origin-bottom transform"
+              [ngStyle]="clockStyle.minute"></div>
+          </div>
+        </div>
+        <input type="time" [(ngModel)]="timeInput" (change)="onTimeInputChange(timeInput)"
+          class="border w-32 p-2 rounded text-center" min="08:00" max="20:00" step="300">
+      </div>
+    </div>
+
+    <hr class="my-6" />
+
+    <!-- Footer -->
+    <div class="flex flex-wrap justify-between items-center gap-2">
+      <div class="text-sm font-bold">تأكيد الموعد</div>
+      <div class="flex flex-wrap items-center gap-2">
+        <div class="bg-purple-100 text-purple-700 px-4 py-1 rounded-full">{{ selectedDate }}</div>
+        <div class="bg-gray-100 text-gray-800 px-4 py-1 rounded-full">{{ hour }}:{{ minute }}</div>
+        <button (click)="submitDateTime()"
+          class="bg-purple-700 text-white px-6 py-2 rounded hover:bg-purple-800">إرسال</button>
+        <button (click)="closePopup()" class="text-gray-600 hover:text-gray-800">إلغاء</button>
+      </div>
+    </div>
+  </div>
+</div>

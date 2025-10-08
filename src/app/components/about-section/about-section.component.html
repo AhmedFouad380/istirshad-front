@@ -1,0 +1,28 @@
+<div
+class="bg-[#2D1D4A] text-white py-16 px-6 md:px-20 grid grid-cols-1 md:grid-cols-2 gap-10 items-center"
+>
+  <!-- Image Section -->
+
+  <!-- Text Content -->
+  <div class="space-y-12 text- md:text-right">
+    <!-- عن جدير -->
+    <div  *ngFor="let item of values"  class="space-y-4">
+      <h2 class="text-xl font-bold border-r-4 border-[#6E5EA9] pr-3 inline-block">
+{{item.title.ar}}      </h2>
+<p
+ class="leading-loose text-base sm:text-lg text-[#FFFFFF]"  
+  [innerHTML]="item.description.ar">
+</p>
+    
+    </div>
+
+  
+  </div>
+  <div class="flex justify-center md:justify-end">
+    <img
+      src="assets/images/about-devices.png"
+      alt="عن جدير"
+      class="w-[80%] max-w-md"
+    />
+  </div>
+</div>

@@ -1,0 +1,207 @@
+<div *ngIf="isLoading">
+    <app-loading></app-loading>
+  </div>
+  
+  <div *ngIf="!isLoading" class="flex flex-col items-center gap-6 px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+  
+    <!-- ملف الخبير -->
+    <button class="bg-[#231E31] text-white py-2 px-6 rounded-lg text-sm">
+        تفاصيل استشارة    </button>
+  
+    <!-- صورة الخبير -->
+    
+    <img [src]="consultant?.consultant?.image" alt="{{consultant?.consultant?.name}}"   class="w-40 sm:w-52 md:w-60 h-40 sm:h-52 md:h-60 bg-[#6E5EA9] border border-[#231E31] rounded-xl object-cover">
+    
+  <div class="text-center flex flex-col gap-2">
+  
+    <!-- اسم الخبير -->
+    <h2 class="text-xl font-bold text-gray-800">{{consultant?.consultant?.name}}</h2>
+  
+    <!-- التخصص -->
+    <div class="text-sm flex flex-col  gap-3 items-center text-white">
+        <span class="bg-[#6E5EA9] py-1.5 px-4 rounded-full text-white font-medium">
+            الاستشارة 
+            {{
+              consultant?.type === 'completed'
+                ? 'منتهية'
+                : consultant?.type === 'accepted'
+                  ? 'جارية'
+                  : 'قيد الموافقة'
+            }}
+          </span>        <span class="bg-[#9E63DA1A] text-[#583B97] py-2 px-3 rounded-full">رمز الاستشارة:
+             <span class="font-bold">
+            
+            {{ consultant?.code }}
+        </span>
+        </span>
+      </div>
+ 
+    </div>
+  
+  <!-- بيانات الاستشارة -->
+
+  
+  </div>
+  <div class="bg-[#1C1826] w-full">
+    <div class="w-full max-w-3xl mx-auto text-white px-4 sm:px-6 lg:px-8 py-6 text-center flex flex-col gap-6">
+  
+    <!-- اسم الخبير + رقم الاستشارة -->
+      <h2 class="text-2xl font-bold mb-2">تاريخ الاستشارة</h2>
+ 
+<!-- معلومات التاريخ والوقت والمدة -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+  <!-- تاريخ الاستشارة -->
+    <div class="bg-white rounded-xl py-6 px-4 flex flex-col gap-2 items-center shadow-md">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="24" r="24" fill="#9E63DA" fill-opacity="0.18"/>
+            <path d="M18.7373 10.9238V14.8597" stroke="#6E5EA9" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M29.2305 10.9238V14.8597" stroke="#6E5EA9" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12.834 20.2251H35.137" stroke="#6E5EA9" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M35.7917 19.4513V30.6028C35.7917 34.5387 33.8238 37.1625 29.232 37.1625H18.7365C14.1447 37.1625 12.1768 34.5387 12.1768 30.6028V19.4513C12.1768 15.5155 14.1447 12.8916 18.7365 12.8916H29.232C33.8238 12.8916 35.7917 15.5155 35.7917 19.4513Z" stroke="#6E5EA9" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M28.8294 26.2746H28.8412" stroke="#6E5EA9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M28.8294 30.2107H28.8412" stroke="#6E5EA9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M23.9788 26.2746H23.9906" stroke="#6E5EA9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M23.9788 30.2107H23.9906" stroke="#6E5EA9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M19.1214 26.2746H19.1332" stroke="#6E5EA9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M19.1214 30.2107H19.1332" stroke="#6E5EA9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            
+      <p class="text-[#1C1B1F] font-medium">تاريخ الاستشارة</p>
+      <span class="text-[#6E5EA9] font-extrabold text-lg mt-1">{{ consultant?.start_date ||"لم يتم تحديد وقت حتي الان" }}</span>
+    </div>
+  
+    <!-- توقيت الاستشارة -->
+    <div class="bg-white rounded-xl py-6 px-4 flex flex-col gap-2 items-center shadow-md">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="24" r="24" fill="#9E63DA" fill-opacity="0.18"/>
+            <path d="M36 24C36 30.624 30.624 36 24 36C17.376 36 12 30.624 12 24C12 17.376 17.376 12 24 12C30.624 12 36 17.376 36 24Z" stroke="#6E5EA9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M26 28L22.9608 26.0704C22.4314 25.7366 22 24.9335 22 24.2764V20" stroke="#6E5EA9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            
+            
+            
+      <p class="text-[#1C1B1F] font-medium">توقيت الاستشارة</p>
+      <span class="text-[#6E5EA9] font-extrabold text-lg mt-1">{{ consultant?.start_time ||"لم يتم تحديد وقت حتي الان" }}</span>
+    </div>
+  
+    <!-- مدة الاستشارة -->
+    <div  class="bg-white rounded-xl py-6 px-4 flex flex-col gap-2 items-center shadow-md">
+        <svg width="47" height="48" viewBox="0 0 47 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="23.5" cy="24" rx="23.5" ry="24" fill="#9E63DA" fill-opacity="0.18"/>
+            <path d="M35.2227 25.7158C35.2227 32.0525 30.0799 37.1953 23.7432 37.1953C17.4065 37.1953 12.2637 32.0525 12.2637 25.7158C12.2637 19.3791 17.4065 14.2363 23.7432 14.2363C30.0799 14.2363 35.2227 19.3791 35.2227 25.7158Z" stroke="#6E5EA9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M23.7432 18.8276V25.3874" stroke="#6E5EA9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            
+      <p class="text-[#1C1B1F] font-medium">مدة الاستشارة</p>
+      <span class="text-[#6E5EA9] font-extrabold text-lg mt-1">{{ consultant?.period || "لم يتم بدأ الاستشارة" }}</span>
+    </div>
+  </div>
+  
+<hr>
+
+  
+    <!-- التخصص -->
+    <h1 class="text-xl">التخصص</h1>
+    <div class="flex justify-center">
+      <span class="flex items-center gap-2 bg-[#8C6CFF] text-white font-bold py-2 px-5 rounded-full">
+        {{ consultant?.category }}
+      </span>
+    </div>
+    <hr>
+  
+    <h1 class="text-xl">تفاصيل الاستشارة</h1>
+
+    <!--  -->
+    <div class="text-sm text-white bg-[#241D3F] border border-[#C4B4FF8C]  p-4 rounded-lg leading-relaxed">
+      {{ consultant?.description }}
+    </div>
+  
+    <hr>
+
+    <button
+    (click)="showComplaintModal = true"
+    class="w-full sm:w-1/2 md:w-[35%] mx-auto font-bold py-2 px-6 rounded-lg  border-dashed border-2 border-[#FFFFFF] text-[#FF2A2A]
+           hover:bg-[#FF2A2A] hover:text-white hover:border-[#FF2A2A] transition-all duration-300">
+    رفع شكوى
+  </button>
+    <!-- أزرار التفاعل -->
+    <hr>
+   
+
+    <button 
+    [routerLink]="['/Contact_us']"  
+    class="w-full sm:w-1/2 md:w-[35%] mx-auto text-white font-bold py-2 px-6 rounded-lg border border-[#777] flex items-center justify-center gap-2
+           bg-[#32284C] hover:bg-[#4B3A70] hover:border-[#8C6CFF] transition-all duration-300">
+    التواصل مع خدمة العملاء  
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5.74935 17.166C6.99935 17.916 8.49935 18.3327 9.99935 18.3327C14.5827 18.3327 18.3327 14.5827 18.3327 9.99935C18.3327 5.41602 14.5827 1.66602 9.99935 1.66602C5.41602 1.66602 1.66602 5.41602 1.66602 9.99935C1.66602 11.4993 2.08268 12.916 2.74935 14.166L2.10646 16.6387C1.91174 17.3876 2.60494 18.0644 3.349 17.8518L5.74935 17.166Z" stroke="white" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M13.75 12.3737C13.75 12.5087 13.72 12.6475 13.6561 12.7825C13.5923 12.9175 13.5096 13.045 13.4007 13.165C13.2167 13.3675 13.0139 13.5138 12.7848 13.6075C12.5595 13.7013 12.3153 13.75 12.0525 13.75C11.6694 13.75 11.26 13.66 10.8281 13.4763C10.3962 13.2925 9.96432 13.045 9.53618 12.7338C9.10428 12.4188 8.69492 12.07 8.30433 11.6837C7.9175 11.2937 7.56823 10.885 7.25651 10.4575C6.94855 10.03 6.70068 9.6025 6.52041 9.17875C6.34014 8.75125 6.25 8.3425 6.25 7.9525C6.25 7.6975 6.29507 7.45375 6.3852 7.22875C6.47534 7 6.61805 6.79 6.8171 6.6025C7.05746 6.36625 7.32036 6.25 7.59827 6.25C7.70343 6.25 7.80859 6.2725 7.90248 6.3175C8.00013 6.3625 8.0865 6.43 8.15411 6.5275L9.02541 7.75375C9.09301 7.8475 9.14184 7.93375 9.17564 8.01625C9.20944 8.095 9.22822 8.17375 9.22822 8.245C9.22822 8.335 9.20193 8.425 9.14935 8.51125C9.10053 8.5975 9.02917 8.6875 8.93903 8.7775L8.65361 9.07375C8.61229 9.115 8.59352 9.16375 8.59352 9.22375C8.59352 9.25375 8.59727 9.28 8.60478 9.31C8.61605 9.34 8.62732 9.3625 8.63483 9.385C8.70243 9.50875 8.81885 9.67 8.9841 9.865C9.1531 10.06 9.33337 10.2588 9.52867 10.4575C9.73147 10.6563 9.92677 10.84 10.1258 11.0087C10.3211 11.1737 10.4826 11.2862 10.6103 11.3537C10.6291 11.3612 10.6516 11.3725 10.6779 11.3837C10.7079 11.395 10.738 11.3987 10.7718 11.3987C10.8356 11.3987 10.8845 11.3763 10.9258 11.335L11.2112 11.0538C11.3051 10.96 11.3952 10.8887 11.4816 10.8438C11.568 10.7912 11.6544 10.765 11.7482 10.765C11.8196 10.765 11.8947 10.78 11.9773 10.8138C12.06 10.8475 12.1463 10.8963 12.2402 10.96L13.4834 11.8412C13.581 11.9087 13.6486 11.9875 13.6899 12.0812C13.7275 12.175 13.75 12.2687 13.75 12.3737Z" stroke="white" stroke-miterlimit="10"/>
+        </svg>
+        
+      </button>
+    <!-- أزرار التفاعل -->
+   
+    <button
+    *ngIf="consultant?.type !== 'pending'"
+    (click)="goToChat(consultant?.id)"
+    class="w-full sm:w-1/2 md:w-[45%] mt-8 mx-auto text-white font-bold py-2 px-6 rounded-lg border border-[#777] flex items-center justify-center gap-2
+           bg-[#8C6CFF] hover:bg-[#A084FF] hover:text-black transition-all duration-300">
+    المحادثة     
+        <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.7 0H13.3C17.1 0 19 1.9 19 5.7V18.05C19 18.5725 18.5725 19 18.05 19H5.7C1.9 19 0 17.1 0 13.3V5.7C0 1.9 1.9 0 5.7 0ZM7.6 12.5875H14.25C14.6395 12.5875 14.9625 12.2645 14.9625 11.875C14.9625 11.4855 14.6395 11.1625 14.25 11.1625H7.6C7.2105 11.1625 6.8875 11.4855 6.8875 11.875C6.8875 12.2645 7.2105 12.5875 7.6 12.5875ZM4.75 7.8375H14.25C14.6395 7.8375 14.9625 7.5145 14.9625 7.125C14.9625 6.7355 14.6395 6.4125 14.25 6.4125H4.75C4.3605 6.4125 4.0375 6.7355 4.0375 7.125C4.0375 7.5145 4.3605 7.8375 4.75 7.8375Z" fill="white"/>
+            </svg>
+            
+      </button>
+  
+  </div>
+</div>
+
+ <div *ngIf="showComplaintModal" class="fixed inset-0 bg-black/50 flex items-center  justify-center z-50">
+    <div class="bg-white rounded-lg p-6 max-w-3xl w-full text-center relative">
+  
+      <!-- زر الإغلاق -->
+      <div class="absolute top-4 left-4">
+        <button (click)="showComplaintModal = false"
+          class="w-7 h-7 rounded-full bg-[#6E5EA9] text-white flex items-center justify-center text-lg font-bold shadow hover:bg-[#5a4e98] transition">
+          ×
+        </button>
+      </div>
+  
+      <!-- العنوان -->
+      <h2 class="text-xl  text-[#231E31] mb-6 text-center">شكوى وإبلاغ</h2>
+  
+      <!-- القائمة المنسدلة -->
+      <select
+      [(ngModel)]="selectedReason"
+      class="relative w-full appearance-none bg-[#F2F2F2] text-right mb-5 text-sm font-semibold py-3 px-4 rounded-md pr-10"
+      style="background-image: url('data:image/svg+xml;utf8,<svg fill=\'%23000000\' height=\'24\' viewBox=\'0 0 24 24\' width=\'24\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>'); background-repeat: no-repeat; background-position: left 0.75rem center; background-size: 1rem;"
+    >
+        <option *ngFor="let reason of complaintReasons" [value]="reason">
+          {{ reason }}
+        </option>
+      </select>
+  
+      <!-- مربع النص -->
+      <textarea [(ngModel)]="complaintText"
+        placeholder="اكتب شكوتك"
+        rows="10"
+        class="w-full bg-[#F2F2F2] p-3 text-sm text-gray-700 border-0 rounded-md focus:outline-none focus:ring-0 placeholder:text-gray-400">
+      </textarea>
+  
+      <!-- زر الإرسال -->
+      <div class="mt-6 flex justify-center">
+        <button (click)="submitComplaint()"
+          class="bg-[#6E5EA9] hover:bg-[#5a4e98] text-white font-semibold px-8 py-2 rounded-md flex items-center gap-2 text-sm">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.01 13L13 7.5 2.01 2 2 6l7 1.5L2 9z" fill="white" />
+          </svg>
+          إرسال
+        </button>
+      </div>
+  
+    </div>
+  </div>
+
+  
+
+  

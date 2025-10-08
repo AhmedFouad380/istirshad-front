@@ -1,0 +1,40 @@
+<section class="px-4 md:px-20 py-16 text-center bg-white">
+  <!-- Title -->
+  <h2
+  class="text-xl sm:text-2xl font-bold border-r-4 border-[#6B21A8] pr-3 mb-6 inline-block"
+  >
+    شركاء النجاح وأثر الاستدامة
+  </h2>
+
+  <!-- Description -->
+  <p
+  class="text-gray-700 text-base sm:text-lg leading-relaxed max-w-4xl mx-auto mb-10"
+  >
+مع شركائنا نبني معاً ثقافة التطوع الاحترافي، ونمكّن الكفاءات الوطنية من المساهمة في استدامة الأثر المجتمعي بما يواكب طموحات رؤية المملكة 2030
+  </p>
+
+  <div class="mx-auto">
+    <p-carousel
+      dir="rtl"
+      [value]="partners"
+      [numVisible]="6"
+      [numScroll]="1"
+      [circular]="true"
+      [autoplayInterval]="3000"
+      [responsiveOptions]="responsiveOptions"
+    >
+    <ng-template pTemplate="item" let-partner>
+      <div
+          class="relative p-2 px-4 m-2 my-5 w-full flex items-center justify-center"
+        >
+     
+        <img
+        [src]="partner.image"
+        [alt]="partner.title"
+        class="h-full object-contain max-h-[120px]"
+      />
+        </div>
+      </ng-template>
+    </p-carousel>
+  </div>
+</section>

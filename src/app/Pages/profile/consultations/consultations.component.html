@@ -1,0 +1,119 @@
+<h2 class="text-center font-bold text-lg border-b pb-2 mb-6">الاستشارات</h2>
+
+<!-- Tabs -->
+<div class="flex flex-wrap justify-center gap-2 sm:gap-4 mb-6 text-center">
+  <button
+  class="px-4 py-2 rounded font-semibold min-w-[150px]"
+  [ngClass]="activeTab === 'pending' ? 'bg-[#6E5EA9] text-white' : 'bg-gray-200 text-gray-700'"
+    (click)="changeTab('pending')"
+  >
+    الاستشارات القادمة
+  </button>
+  <button
+  class="px-4 py-2 rounded font-semibold min-w-[150px]"
+  [ngClass]="activeTab === 'accepted' ? 'bg-[#6E5EA9] text-white' : 'bg-gray-200 text-gray-700'"
+    (click)="changeTab('accepted')"
+  >
+    الاستشارات الجارية
+  </button>
+  <button
+  class="px-4 py-2 rounded font-semibold min-w-[150px]"
+  [ngClass]="activeTab === 'completed' ? 'bg-[#6E5EA9] text-white' : 'bg-gray-200 text-gray-700'"
+    (click)="changeTab('completed')"
+  >
+    الاستشارات المنتهية
+  </button>
+</div>
+
+<!-- Loading state -->
+<div *ngIf="loading">
+  <app-loading></app-loading>
+</div>
+
+<!-- Error state -->
+<div *ngIf="error && !loading" class="text-center py-8 text-red-500">
+  {{ error }}
+</div>
+
+<!-- Consultation cards -->
+<div *ngIf="!loading && !error" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+  <div *ngFor="let c of consultations">
+    <div
+      *ngIf="(activeTab === 'pending' && c.type === 'pending') || 
+             (activeTab === 'accepted' && c.type === 'accepted') || 
+             (activeTab === 'completed' && c.type === 'completed')"
+      [ngClass]="activeTab === 'completed' ? 'bg-[#2B253B] text-white border border-blue-300' : 'bg-white text-black'"
+      class="p-4 sm:p-6 rounded-lg shadow-lg flex flex-col justify-between gap-4"
+    >
+      <!-- Consultant info -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <img [src]="c.consultant.image" alt="profile" class="w-16 h-16 rounded-full object-cover" />
+          <div class="text-right">
+            <h2 class="font-bold text-lg sm:text-xl">{{c.type==="pending"? c.title:c.consultant.name }}</h2>
+            <p class="text-sm opacity-70">{{ c.type==="pending"? c.description:c.consultant.consultations_count   }} {{c.type==="pending"?"":"استشارة"}} </p>
+            <div dir="ltr" *ngIf="c.type !== 'pending'" class="text-yellow-400 text-sm leading-none">
+              <ng-container *ngFor="let star of getStarsArray(c.consultant?.rate || 0)">
+                {{ star }}
+              </ng-container>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+  
+      <!-- Description -->
+      <div class="flex flex-col sm:flex-row justify-between  items-start  sm:items-center gap-4">
+        <div class="flex flex-col w-full sm:w-[65%]">
+          <p *ngIf="c.type !== 'pending'" class="text-sm leading-relaxed mb-3">
+            {{ c.consultant.description }}
+          </p>
+        
+          <!-- Tags -->
+          <div *ngIf="c.type !== 'pending' && c.consultant?.categories?.length" class="flex flex-wrap gap-2 mb-4">
+            <span 
+              *ngFor="let tag of c.consultant.categories.slice(0, 4)" 
+              class="border border-[#6E5EA9] bg-[#C4B4FF8C] text-xs px-4 py-1 rounded-md transition"
+            >
+              {{ tag.title }}
+            </span>
+          </div>
+          <div *ngIf="c.type === 'pending'" class="flex flex-wrap gap-2 mb-4">
+            <span  class="border border-[#6E5EA9] bg-[#C4B4FF8C] text-xs px-4 py-1 rounded-md transition">
+              {{ c.category }}
+            </span>
+          </div>
+        </div>
+
+    
+        <div class="flex flex-col gap-2 items-start w-full sm:w-auto">
+          <!-- زر الحالة -->
+          <span
+            [ngClass]="{
+              'bg-yellow-100 text-yellow-800': c.type === 'pending',
+              'bg-[#231E31] text-white': c.type === 'accepted',
+              'bg-[#FECACA] text-[#991B1B]': c.type === 'completed'
+            }"
+            class="text-sm py-2 px-4 rounded-md w-full text-center font-semibold"
+          >
+            {{ getTypeLabel(c.type) }}
+          </span>
+        
+          <!-- زر التفاصيل -->
+          <button
+            (click)="goToChat(c.id)"
+            class="text-sm  py-2 px-4 rounded-md w-full text-center font-medium border border-[#e2e2e2] hover:bg-gray-100 transition"
+          >
+            رؤية التفاصيل
+          </button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+  <!-- Empty state -->
+  <div *ngIf="consultations.length === 0 && !loading" class="col-span-2 text-center py-8 text-gray-500">
+    لا توجد استشارات متاحة
+  </div>
+</div>

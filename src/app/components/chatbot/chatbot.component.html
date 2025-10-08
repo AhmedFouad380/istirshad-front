@@ -1,0 +1,18 @@
+<div class="chatbot-icon" (click)="toggleChat()">
+  <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" alt="Chatbot" style="width:40px;height:40px;" />
+</div>
+<div class="chatbot-sidebar" [class.open]="isOpen">
+  <div class="chatbot-header">
+    <span>Chatbot</span>
+    <button (click)="toggleChat()">&times;</button>
+  </div>
+  <div class="chatbot-messages" #chatContainer>
+    <div *ngFor="let msg of messages" [ngClass]="['chat-message', msg.from]">
+      <span class="chat-bubble">{{ msg.text }}</span>
+    </div>
+  </div>
+  <form class="chatbot-input" (ngSubmit)="sendMessage()">
+    <input [(ngModel)]="userInput" name="userInput" placeholder="Type a message..." autocomplete="off" />
+    <button type="submit">Send</button>
+  </form>
+</div>

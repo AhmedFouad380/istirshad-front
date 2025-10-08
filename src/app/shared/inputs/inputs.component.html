@@ -1,0 +1,28 @@
+<div class="flex flex-col space-x-3 gap-1.5 mb-4">
+  <label for="{{id}}"    class="!text-[15px] !text-right !font-semibold !tracking-wide !text-[#6E5EA9]"
+
+>
+    {{ labelText }}
+    <!-- عرض الأخطاء فقط إذا showErrors = true -->
+    <span *ngIf="showErrors && control?.errors?.required" class="text-red-500 text-xs">* مطلوب</span>
+    <span *ngIf="showErrors && control?.errors?.email" class="text-red-500 text-xs">بريد إلكتروني غير صالح</span>
+    <span *ngIf="showErrors && control?.errors?.pattern" class="text-red-500 text-xs">تنسيق غير صحيح</span>
+  </label>
+
+  <div class="relative">
+    <input 
+      [type]="type"
+      [id]="id"
+      [placeholder]="placeholder"
+      [value]="value"
+      (input)="onInput($event)"
+      (blur)="onTouched()" 
+       [formControl]="control" 
+      [disabled]="disabled"
+      class="px-4 py-3 border w-full text-right border-gray-300 rounded-md
+             focus:border-[#6E5EA9] focus:outline-none placeholder-[#C8C8C8] 
+             placeholder:text-sm text-black"
+      [class.border-red-500]="showErrors && control?.invalid"
+    />
+  </div>
+</div>

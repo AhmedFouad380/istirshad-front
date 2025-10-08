@@ -1,0 +1,68 @@
+<section class="bg-gray-50 pt-16 px-4 sm:px-6 lg:px-20 text-center relative overflow-hidden">
+
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 mx-auto items-center">
+      <!-- العنوان -->
+<div class="sm:col-span-1 col-span-3 flex flex-col items-center  sm:items-start justify-center  mb-8 text-start  sm:text-center">
+        <h2 class="text-2xl sm:text-3xl w-[85%] font-extrabold text-[#6E5EA9] mb-6  sm:text-start text-center mx-auto sm:mx-0 ">
+            نقدم لك الاستشارة  التي تريد
+        </h2>
+          <!-- زر -->
+       <a
+    class="group relative flex items-center gap-2.5 bg-transparent w-fit sm:mx-0 mx-auto border border-[#6E5EA9] text-[#6E5EA9] px-8 py-3 rounded-lg text-base font-medium transition-all duration-300 hover:bg-[#6E5EA9] hover:text-white mb-12"
+    [routerLink]="['/Consulting_areas']"
+  >
+احجز استشارتك الآن 
+   <svg class="transition-transform duration-300 group-hover:translate-x-1" width="8" height="12" viewBox="0 0 8 12" fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M0.46967 5.46967C0.176777 5.76256 0.176777 6.23744 0.46967 6.53033L5.24264 11.3033C5.53553 11.5962 6.01041 11.5962 6.3033 11.3033C6.59619 11.0104 6.59619 10.5355 6.3033 10.2426L2.06066 6L6.3033 1.75736C6.59619 1.46447 6.59619 0.989593 6.3033 0.696699C6.01041 0.403806 5.53553 0.403806 5.24264 0.696699L0.46967 5.46967Z"
+        fill="currentColor" />
+    </svg>
+  </a>
+       </div>
+ 
+
+  <!-- الوصف -->
+   <div class="col-span-3   flex flex-col">
+
+    <p class="text-[#231E31] text-justify max-w-2xl  mx-auto text-md  mb-6 leading-relaxed">
+    تطبيق جدير يقدم للأفراد و للجمعيات الاستشارات عن طريق الكتابة النصية و الصوتية والفيديو عن طريق خبراء متخصصين في مجالات:
+  </p>
+
+  <!-- المجالات -->
+  <p class="text-[#231E31] text-justify max-w-2xl  mx-auto text-md  mb-6 leading-relaxed">
+    الإدارة، الأوقاف، التقنية، الاتصال المؤسسي، القانون، التطوع، تأسيس السياسات واللوائح، دعم العمل الخيري، الإعلام، الجودة، الاستدامة المالية، إدارة الأعمال، الاستشارات المالية، الحوكمة، تأسيس الجمعيات الناشئة، التدريب.
+  </p>
+</div>
+
+
+  </div>
+
+  <div *ngIf="partners.length>0"  class="mx-auto">
+    <p-carousel
+    dir="rtl"
+    [value]="partners"
+    [numVisible]="4"
+    [numScroll]="1"
+    [circular]="true"
+    [autoplayInterval]="3000"
+    [responsiveOptions]="responsiveOptions"
+  >
+  
+  <ng-template pTemplate="item" let-partner>
+    <div
+        class="relative p-2 px-4 m-2 my-5 w-full flex items-center  justify-center"
+      >
+   
+      <img
+      [src]="partner.image"
+      [alt]="partner.title"
+      class=" object-contain h-[300px]"
+    />
+      </div>
+    </ng-template>
+      </p-carousel>
+  </div>
+
+</section>
+

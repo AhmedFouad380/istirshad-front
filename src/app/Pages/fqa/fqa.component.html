@@ -1,0 +1,44 @@
+<div *ngIf="isLoading">
+  <app-loading></app-loading>
+</div>
+
+<div *ngIf="!isLoading" class="max-w-4xl mx-auto  px-4 sm:px-6 py-24">
+  <!-- العنوان الرئيسي -->
+  <h2 class="text-right text-xl sm:text-2xl font-bold mb-8 flex items-center gap-2 text-[#231E31]">
+    <span class="w-1.5 h-6 bg-[#6E5EA9]"></span>
+    الأسئلة الشائعة
+  </h2>
+
+  <!-- الأسئلة -->
+  <div *ngFor="let faq of faqs; let i = index" class="border-b py-6">
+    <div (click)="toggle(i)" class="flex flex-col sm:flex-row sm:items-center justify-between cursor-pointer gap-4 sm:gap-0">
+      
+      <!-- رقم السؤال والعنوان -->
+      <div class="flex items-start sm:items-center justify-between w-full sm:w-[75%] gap-4 text-right">
+        <div class="text-4xl sm:text-6xl font-bold text-gray-200 leading-none">
+          {{ (i + 1) | number: '2.0' }}
+        </div>
+        <h3 class="text-base sm:text-lg font-semibold flex-1">
+          {{ faq.title }}
+        </h3>
+      </div>
+
+      <!-- زر التبديل -->
+      <button class="bg-[#6E5EA9] text-white rounded-full w-8 h-8 flex items-center justify-center self-end sm:self-auto">
+        <svg *ngIf="openIndex === i; else plusIcon" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6" />
+        </svg>
+        <ng-template #plusIcon>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+        </ng-template>
+      </button>
+    </div>
+
+    <!-- الإجابة -->
+    <div *ngIf="openIndex === i" class="mt-4 text-gray-600 w-full sm:w-[90%] text-sm leading-relaxed text-right pr-0 sm:pr-10">
+      {{ faq.description }}
+    </div>
+  </div>
+</div>

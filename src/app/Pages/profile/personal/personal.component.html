@@ -1,0 +1,307 @@
+<h2 class="text-center font-bold text-lg border-b pb-2 mb-4">ملفي الشخصي</h2>
+
+<!-- وضع العرض العادي -->
+<div *ngIf="!isEditMode">
+  <!-- البلوك العلوي: الصورة والاسم -->
+  <div class="bg-gray-100 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 rounded p-5 gap-4">
+    <div class="flex items-center gap-3">
+      <img [src]="userData?.image" class="w-12 h-12 rounded-full object-cover" />
+      <div class="text-right">
+        <p class="font-bold text-sm">{{ userData?.name }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- عنوان فرعي -->
+  <h3 class="text-center font-semibold text-sm mb-2">معلومات شخصية</h3>
+
+  <!-- المعلومات -->
+  <div class="bg-gray-100 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 rounded px-4 py-4 sm:p-5 gap-6">
+    <div class="col-span-full flex justify-end">
+      <button (click)="enableEditMode()" class="bg-[#2B253B] text-white text-sm px-4 py-1 rounded flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z" />
+        </svg>
+        تعديل
+      </button>
+    </div>
+    
+    <!-- الاسم الأول -->
+    <div class="text-right space-y-1">
+      <p class="text-sm text-gray-500">الاسم الأول</p>
+      <p class="font-semibold text-sm">{{ userData?.first_name }}</p>
+    </div>
+
+    <!-- الاسم الأوسط -->
+    <div class="text-right space-y-1">
+      <p class="text-sm text-gray-500">الاسم الأوسط</p>
+      <p class="font-semibold text-sm">{{ userData?.middle_name }}</p>
+    </div>
+
+    <!-- الاسم الأخير -->
+    <div class="text-right space-y-1">
+      <p class="text-sm text-gray-500">الاسم الأخير</p>
+      <p class="font-semibold text-sm">{{ userData?.last_name }}</p>
+    </div>
+
+    <!-- الإيميل -->
+    <div class="text-right space-y-1">
+      <p class="text-sm text-gray-500">الإيميل</p>
+      <p class="font-semibold text-sm">{{ userData?.email }}</p>
+    </div>
+
+    <!-- رقم الهاتف -->
+    <div class="text-right space-y-1">
+      <p class="text-sm text-gray-500">رقم الهاتف</p>
+      <p class="font-semibold text-sm">{{ userData?.phone }}</p>
+    </div>
+
+    <!-- تاريخ الميلاد -->
+    <div class="text-right space-y-1" *ngIf="userData?.birth_day">
+      <p class="text-sm text-gray-500">تاريخ الميلاد</p>
+      <p class="font-semibold text-sm">{{ userData?.birth_day }}</p>
+    </div>
+
+    <!-- المدينة -->
+    <div class="text-right space-y-1" *ngIf="userData?.city_id">
+      <p class="text-sm text-gray-500">المدينة</p>
+      <p class="font-semibold text-sm">{{ getCityName(userData?.city_id) }}</p>
+    </div>
+
+ <div class="text-right space-y-1" *ngIf="userData?.type === 'consultant'">
+  <p class="text-sm text-gray-500">التخصص</p>
+  <p class="font-semibold text-sm">
+    <ng-container *ngIf="userData?.categories?.length; else noCategories">
+      <ng-container *ngFor="let cat of userData.categories; let i = index">
+        {{ cat.title?.ar }}<span *ngIf="i < userData.categories.length - 1"> -- </span>
+      </ng-container>
+    </ng-container>
+    <ng-template #noCategories>غير محدد</ng-template>
+  </p>
+</div>
+
+    
+    <div class="text-right space-y-1" *ngIf="userData?.type === 'consultant' ||userData?.description">
+      <p class="text-sm text-gray-500">نبذة عني</p>
+      <p class="font-semibold text-sm">{{ userData.description }}</p>
+    </div>
+    <!-- المهنة -->
+    <div class="text-right space-y-1">
+      <p class="text-sm text-gray-500">المهنة</p>
+      <p class="font-semibold text-sm">
+        {{ userData?.type === 'consultant' ? 'خبير' : 'مستخدم' }}
+      </p>
+    </div>
+    <div class="text-right space-y-1" *ngIf="userData?.type === 'consultant'||userData?.education?.length">
+      <p class="text-sm text-gray-500">المؤهلات</p>
+      <ul class="list-disc pr-4 text-sm font-semibold">
+        <li *ngFor="let edu of userData.education">{{ edu }}</li>
+      </ul>
+    </div>
+    <div class="text-right space-y-1" *ngIf="userData?.type === 'consultant' || userData?.experience?.length">
+  <p class="text-sm text-gray-500">الخبرات</p>
+  <ul class="list-disc pr-4 text-sm font-semibold">
+    <li *ngFor="let exp of userData.experience">
+      {{ exp.description }} - {{ exp.date | date: 'yyyy/MM/dd' }}
+    </li>
+  </ul>
+</div>
+  </div>
+</div>
+
+<!-- وضع التعديل -->
+<div *ngIf="isEditMode" class="p-4 grid grid-cols-1 md:grid-cols-12 gap-6">
+  <!-- صورة المستخدم -->
+  <div class="md:col-span-3 text-center flex flex-col items-center">
+    <div class="relative w-28 h-28 sm:w-32 sm:h-32">
+      <img [src]="userData?.image || 'assets/images/Ellipse 4.png'" 
+           class="w-full h-full object-cover rounded-full">
+      <label for="imageUpload" class="absolute bottom-0 right-0 bg-[#6E5EA9] rounded-full p-2 cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      </label>
+      <input id="imageUpload" type="file" (change)="onImageChange($event)" class="hidden" accept="image/*">
+    </div>
+
+    <h2 class="mt-2 font-bold text-base sm:text-lg">
+      {{ userData?.first_name }} {{ userData?.last_name }}
+    </h2>
+    <p class="text-[#6B6B6B] text-sm">{{ userData?.type === 'consultant' ? 'خبير' : 'مستخدم' }}</p>
+  </div>
+
+  <!-- الفورم -->
+  <div class="md:col-span-9 w-full">
+    <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      
+      <!-- First Name -->
+      <div>
+        <app-inputs
+          labelText="الاسم الاول *"
+          placeholder="الاسم الاول"
+          formControlName="first_name"
+          type="text"
+          [control]="editForm.get('first_name')"
+          [showErrors]="editForm.get('first_name')?.touched || isSubmitted">
+        </app-inputs>
+      </div>
+
+      <!-- Middle Name -->
+      <div>
+        <app-inputs
+          labelText="الاسم الثاني *"
+          placeholder="الاسم الثاني"
+          formControlName="middle_name"
+          type="text"
+          [control]="editForm.get('middle_name')"
+          [showErrors]="editForm.get('middle_name')?.touched || isSubmitted">
+        </app-inputs>
+      </div>
+
+      <!-- Last Name -->
+      <div>
+        <app-inputs
+          labelText="الاسم الاخير *"
+          placeholder="الاسم الاخير"
+          formControlName="last_name"
+          type="text"
+          [control]="editForm.get('last_name')"
+          [showErrors]="editForm.get('last_name')?.touched || isSubmitted">
+        </app-inputs>
+      </div>
+
+
+      <!-- Email -->
+      <div class="sm:col-span-2">
+        <app-inputs
+          labelText="الإيميل *"
+          placeholder="Info@Mail.com"
+          formControlName="email"
+          type="email"
+          [control]="editForm.get('email')"
+          [showErrors]="editForm.get('email')?.touched || isSubmitted">
+        </app-inputs>
+      </div>
+
+      <!-- Birth Date -->
+      <div>
+        <app-inputs
+          labelText="تاريخ الميلاد"
+          formControlName="birth_day"
+          type="date"
+          [control]="editForm.get('birth_day')"
+          [showErrors]="editForm.get('birth_day')?.touched || isSubmitted">
+        </app-inputs>
+      </div>
+
+      <!-- City -->
+      <div>
+        <app-shared-select
+          [label]="'المدينة'"
+          [defaultValue]="'اختر المدينة'"
+          [options]="cityOptions"
+          formControlName="city_id"
+          [control]="editForm.get('city_id')"
+          [showErrors]="editForm.get('city_id')?.touched || isSubmitted">
+        </app-shared-select>
+      </div>
+
+      <div class="col-span-3" *ngIf="userData?.type === 'consultant'">
+        <app-multi-select
+        formControlName="categories"
+        [label]="'المجالات * (4 مجالات كحد أقصى)'"
+        [options]="categoryOptions"
+        [maxSelect]="4">
+      </app-multi-select>
+      </div>
+      <div *ngIf="userData?.type === 'consultant'" class="col-span-3">
+        <label for="description" class="text-[#6E54A3] text-right w-full font-bold text-sm block mb-1">
+          نبذة عني (500 كلمة) *
+        </label>
+      
+        <textarea
+          id="description"
+          formControlName="description"
+
+          rows="6"
+          placeholder="اكتب نبذة مختصرة عنك هنا..."
+          class="w-full px-4 py-3 border border-gray-300 rounded-md text-sm text-gray-700 focus:outline-none focus:border-[#6E5EA9] placeholder:text-[#C8C8C8]"
+        ></textarea>
+      
+  
+      </div>
+      <!-- التعليم -->
+<!-- التعليم -->
+<div *ngIf="userData?.type === 'consultant'" class="col-span-3">
+
+  <div *ngFor="let edu of educationControls.controls; let i = index" class="flex gap-2  w-full items-center ">
+    <app-inputs
+    [labelText]="'الدرجة العلمية'"
+    [placeholder]="'مثال: بكالوريوس إدارة أعمال'"
+    [type]="'text'"
+    [control]="edu"
+    [showErrors]="isSubmitted"
+  ></app-inputs>
+
+    <button
+      type="button"
+      (click)="removeEducationField(i)"
+      class="text-red-500 text-xs mt-3"
+      *ngIf="educationControls.length > 1">
+      حذف
+    </button>
+  </div>
+
+  <button type="button" (click)="addEducationField()" class="mt-2 text-[#6E5EA9] text-sm ">
+    + إضافة درجة علمية جديدة
+  </button>
+</div>
+
+<!-- الخبرة -->
+<div *ngIf="userData?.type === 'consultant'" class="col-span-3 flex-col w-full">
+
+  <div *ngFor="let exp of experienceControls.controls; let i = index" class="flex gap-2  w-full items-center ">
+    <app-inputs
+      [labelText]="'سنوات الخبرة'"
+      [placeholder]="'مثال: 5 سنوات في التسويق'"
+      [type]="'text'"
+      [control]="exp"
+      [showErrors]="isSubmitted"
+    ></app-inputs>
+
+    <button
+      type="button"
+      (click)="removeExperienceField(i)"
+      class="text-red-500 text-xs mt-3"
+      *ngIf="experienceControls.length > 1">
+      حذف
+    </button>
+  </div>
+
+  <button type="button" (click)="addExperienceField()" class="mt-2 text-[#6E5EA9] text-sm ">
+    + إضافة خبره جديدة
+  </button>
+</div>
+
+
+      
+
+ 
+ 
+      <!-- الأزرار -->
+      <div class="col-span-full flex flex-col sm:flex-row justify-end gap-4 mt-6">
+        <button type="button" (click)="cancelEdit()"
+                class="w-full sm:w-auto px-6 py-2 border border-[#6E5EA9] text-[#6E5EA9] rounded-md hover:bg-gray-50">
+          إلغاء
+        </button>
+        <button type="submit" [disabled]="isSubmitting"
+                class="w-full sm:w-auto px-6 py-2 bg-[#6E5EA9] text-white rounded-md hover:bg-[#5c4a96] disabled:opacity-50">
+          {{ isSubmitting ? 'جاري الحفظ...' : 'حفظ التعديلات' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

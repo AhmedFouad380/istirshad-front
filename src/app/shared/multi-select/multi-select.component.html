@@ -1,0 +1,37 @@
+<div class="flex flex-col gap-1">
+    <label class="!text-[#6E54A3] text-right !font-semibold !text-sm">{{ label }}</label>
+  
+    <!-- الزر -->
+    <div class="relative">
+      <button type="button"
+        class="w-full px-4 py-3.5 border border-gray-300 rounded-md text-sm text-gray-700 text-right flex justify-between items-center"
+        (click)="open = !open"
+        [disabled]="disabled">
+        <span class="truncate text-right w-full">
+          {{ selectedValues.length ? getSelectedLabels().join(', ') : placeholder }}
+        </span>
+        <svg class="w-4 h-4 text-gray-400 shrink-0 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+  
+      <!-- القائمة -->
+      <div *ngIf="open" class="absolute z-50 mt-0 w-full max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-md shadow">
+        <label *ngFor="let option of options" class="flex mt-1 items-center px-4 py-2 text-sm cursor-pointer hover:bg-gray-100">
+          <input type="checkbox"
+                 [checked]="isSelected(option.value)"
+                 (change)="toggleOption(option.value)"
+                        [disabled]="selectedValues.length>= maxSelect-1 && !isSelected(option.value)"
+
+                 class="me-2 mt">
+          {{ option.label }}
+        </label>
+      </div>
+    </div>
+  
+    <!-- رسالة الحد الأقصى -->
+    <div *ngIf="selectedValues.length >= maxSelect" class="text-xs text-red-500 text-right">
+      يمكنك اختيار 4 عناصر فقط
+    </div>
+  </div>
+  

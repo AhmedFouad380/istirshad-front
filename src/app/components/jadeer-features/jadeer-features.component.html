@@ -1,0 +1,37 @@
+<section class="px-4 md:px-20 py-16 bg-white ">
+  <h2 class="text-xl sm:text-2xl font-bold  border-r-4 border-[#6B21A8] pr-3 mb-12 inline-block">
+    بعض مميزات <span class="text-[#6B21A8]">جدير</span>
+  </h2>
+
+<div class="grid grid-cols-1 lg:grid-cols-12 w-full gap-2 text-start items-stretch">
+    <!-- العمود الأيمن -->
+<!-- العمود الأيمن -->
+<div class="lg:col-span-4 grid grid-cols-1 gap-6 lg:gap-12 content-start">
+  <div *ngFor="let item of leftFeatures"
+       class="flex flex-col gap-3 group transition transform hover:-translate-y-1 hover:scale-[1.01] rounded-xl bg-white p-5 py-8 w-full sm:w-[85%] mx-auto hover:bg-[#6B21A8] hover:text-white shadow-xl hover:shadow-2xl"
+       style="box-shadow: 0px -4px 20px rgba(0,0,0,0.1);">
+    <img [src]="item.icon" class="w-14 h-14" alt="">
+    <h3 class="text-base sm:text-lg font-bold mb-2 group-hover:text-white">{{ item.title.ar }}</h3>
+    <p class="text-gray-700 text-justify group-hover:text-white text-sm sm:text-base">{{ item.description.ar }}</p>
+  </div>
+</div>
+
+<!-- صورة الهاتف في المنتصف -->
+<div class="flex justify-center lg:col-span-4">
+  <img src="assets/images/jadeer-mobile.png" alt="محادثات الخبراء"
+       class="w-[95%] mx-auto lg:w-[100%]" />
+</div>
+
+<!-- العمود الأيسر -->
+<div class="lg:col-span-4 grid grid-cols-1 gap-6 lg:gap-12 content-start">
+  <div *ngFor="let item of rightFeatures"
+       class="flex flex-col gap-3 group transition transform hover:-translate-y-1 hover:scale-[1.01] rounded-xl bg-white p-5 py-8 w-full sm:w-[85%] mx-auto hover:bg-[#6B21A8] hover:text-white shadow-xl hover:shadow-2xl"
+       style="box-shadow: 0px -4px 20px rgba(0,0,0,0.1);">
+    <img [src]="item.icon" class="w-14 h-14" alt="">
+    <h3 class="text-base sm:text-lg font-bold mb-2 group-hover:text-white">{{ item.title.ar }}</h3>
+    <p class="text-gray-700 group-hover:text-white text-sm sm:text-base">{{ item.description.ar }}</p>
+  </div>
+</div>
+
+  </div>
+</section>

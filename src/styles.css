@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: 'BahijTheSansArabic';
+    src: url('assets/fonts/BahijTheSansArabic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  body {
+    direction: rtl;
+    font-family: 'BahijTheSansArabic', sans-serif;
+    text-align: justify !important;
+  }
+  p , h1,h2,h3,h4,h5,h6{
+       text-align: justify !important;
+ 
+  }
+
+.conta{
+  text-align: center !important;
+}
+
+    input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+

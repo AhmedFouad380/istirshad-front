@@ -1,0 +1,438 @@
+<div class="flex flex-col md:flex-row h-screen md:pt-15 pt-10 bg-white">
+
+  <main class="flex-1 flex flex-col overflow-hidden">
+    <!-- التاريخ -->
+      <!-- <div class="text-center text-xs text-gray-400 py-2">{{ selectedExpert?.date }}</div> -->
+  
+      <div #scrollContainer class="flex-1 px-12 py-8 overflow-y-auto space-y-4 max-h-[100vh]  md:max-h-full">
+        <div *ngFor="let msg of experts?.data?.message?.data; let i = index"
+             [ngClass]="msg.alignment"
+             class="flex flex-col space-y-1">
+          <div *ngIf="msg.content"
+               [ngClass]="msg.style"
+               class="px-4 py-2 rounded-xl text-sm max-w-xs font-semibold relative">
+            {{ msg.content }}
+               <span *ngIf="msg.alignment === 'items-end'" class="absolute -right-5 bottom-1 flex items-center">
+                <span *ngIf="msg.status === 'sending'" class="text-gray-400 text-xs">...</span>
+                <span *ngIf="msg.status === 'success'" class="text-green-500 text-xs">✓</span>
+                <span *ngIf="msg.status === 'error'" 
+                      class="text-red-500 text-xs cursor-pointer hover:text-red-700"
+                      (click)="resendMessage(msg)">✗</span>
+                <span *ngIf="msg.status === 'success'" class="ml-1">
+                  <ng-container *ngIf="msg.isRead; else notSeen">✓✓</ng-container>
+                  <ng-template #notSeen>✓</ng-template>
+                </span>
+              </span>
+         
+          </div>
+    
+          <!-- صوت -->
+          <div *ngIf="msg.audioSrc" class="relative">
+            <audio
+            *ngIf="msg.audioSrc"
+             class="w-full mt-2"
+            controls
+            [src]="msg.audioSrc"
+          >
+            المتصفح لا يدعم تشغيل الصوت.
+          </audio>
+            
+            <span *ngIf="msg.alignment === 'items-end'" class="absolute -right-5 bottom-1 flex items-center">
+              <span *ngIf="msg.status === 'sending'" class="text-gray-400 text-xs">...</span>
+              <span *ngIf="msg.status === 'success'" class="text-green-500 text-xs">✓</span>
+              <span *ngIf="msg.status === 'error'" 
+                    class="text-red-500 text-xs cursor-pointer hover:text-red-700"
+                    (click)="resendMessage(msg)">✗</span>
+            </span>
+          </div>
+          
+          <!-- صورة -->
+          <div *ngIf="msg.isImage" class="relative">
+            <img [src]="msg.file" alt="صورة مرفقة" class="w-52 rounded-xl" />
+            
+            <!-- حالة الإرسال للصور -->
+            <span *ngIf="msg.alignment === 'items-end'" class="absolute -right-5 bottom-1 flex items-center">
+              <span *ngIf="msg.status === 'sending'" class="text-gray-400 text-xs">...</span>
+              <span *ngIf="msg.status === 'success'" class="text-green-500 text-xs">✓</span>
+              <span *ngIf="msg.status === 'error'" 
+                    class="text-red-500 text-xs cursor-pointer hover:text-red-700"
+                    (click)="resendMessage(msg)">✗</span>
+            </span>
+          </div>
+          
+          <div #bottom></div>
+          
+          <!-- ملف -->
+          <div *ngIf="msg.isDocument" class="relative">
+            <a [href]="msg.file" download target="_blank" class="text-blue-600 underline text-sm">
+              تحميل الملف
+            </a>
+            
+            <!-- حالة الإرسال للملفات -->
+            <span *ngIf="msg.alignment === 'items-end'" class="absolute -right-5 bottom-1 flex items-center">
+              <span *ngIf="msg.status === 'sending'" class="text-gray-400 text-xs">...</span>
+              <span *ngIf="msg.status === 'success'" class="text-green-500 text-xs">✓</span>
+              <span *ngIf="msg.status === 'error'" 
+                    class="text-red-500 text-xs cursor-pointer hover:text-red-700"
+                    (click)="resendMessage(msg)">✗</span>
+            </span>
+          </div>
+          
+          <!-- الوقت -->
+          <div class="flex items-center justify-between text-xs text-gray-400 mt-1">
+            <span *ngIf="i === experts.data.message.data.length - 1 || msg.time !== experts.data.message.data[i + 1]?.time">
+              {{ msg.time }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="selectedImage && imagePreview" class="relative inline-block">
+        <img
+          [src]="imagePreview"
+          alt="صورة مختارة"
+          class="w-24 h-24 object-contain rounded"
+        />
+      
+        <button
+          (click)="removeSelectedImage()"
+          class="absolute -top-2 right-20 rounded-full w-5 h-5 text-xs text-red-500 flex items-center justify-center"
+          title="إزالة الصورة"
+        >
+          ✕
+        </button>
+      </div>
+      
+      
+      
+      <!-- 📄 عرض اسم الملف المختار -->
+      <div *ngIf="selectedFile" class="mt-2 flex items-center gap-2">
+        <span class="text-sm text-gray-700">{{ selectedFile.name }}</span>
+        <button (click)="removeSelectedFile()" class="text-red-500 text-sm">إزالة</button>
+      </div>
+      <!-- مربع الكتابة -->
+      <div *ngIf="experts?.data?.consultation?.type!=='completed'" class="p-4 bg-white flex flex-wrap md:flex-nowrap items-end justify-between gap-3">
+        <!-- زر المايك والرسالة الصوتية -->
+          <!-- أيقونات البحث، ملف، صورة -->
+      
+          <div class="flex items-center gap-3 pr-2">
+            <div class="flex flex-col items-center gap-1 text-[#6E5EA9] text-xs cursor-pointer" (click)="imageInput.click()">
+              <span>صورة</span>
+
+                <svg width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3.8702 28.5149L3.8402 28.5449C3.4352 27.6599 3.1802 26.6549 3.0752 25.5449C3.1802 26.6399 3.4652 27.6299 3.8702 28.5149Z" fill="#6E5EA9"/>
+                    <path d="M13.4997 15.5697C15.4713 15.5697 17.0697 13.9713 17.0697 11.9997C17.0697 10.028 15.4713 8.42969 13.4997 8.42969C11.528 8.42969 9.92969 10.028 9.92969 11.9997C9.92969 13.9713 11.528 15.5697 13.4997 15.5697Z" fill="#6E5EA9"/>
+                    <path d="M24.285 3H11.715C6.255 3 3 6.255 3 11.715V24.285C3 25.92 3.285 27.345 3.84 28.545C5.13 31.395 7.89 33 11.715 33H24.285C29.745 33 33 29.745 33 24.285V20.85V11.715C33 6.255 29.745 3 24.285 3ZM30.555 18.75C29.385 17.745 27.495 17.745 26.325 18.75L20.085 24.105C18.915 25.11 17.025 25.11 15.855 24.105L15.345 23.685C14.28 22.755 12.585 22.665 11.385 23.475L5.775 27.24C5.445 26.4 5.25 25.425 5.25 24.285V11.715C5.25 7.485 7.485 5.25 11.715 5.25H24.285C28.515 5.25 30.75 7.485 30.75 11.715V18.915L30.555 18.75Z" fill="#6E5EA9"/>
+                    </svg>
+                    <input type="file" #imageInput hidden accept="image/*" (change)="handleImageUpload($event)" />
+
+            </div>
+        
+            <div class="flex flex-col items-center gap-1 text-[#6E5EA9] text-xs cursor-pointer" (click)="fileInput.click()">
+              <span>ملف</span>
+
+                <svg width="28" height="28" viewBox="0 0 32 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M30.3158 13.923H25.4484C21.4568 13.923 18.2063 10.642 18.2063 6.613V1.7C18.2063 0.765 17.4484 0 16.5221 0H9.38105C4.19368 0 0 3.4 0 9.469V24.531C0 30.6 4.19368 34 9.38105 34H22.6189C27.8063 34 32 30.6 32 24.531V15.623C32 14.688 31.2421 13.923 30.3158 13.923Z" fill="#6E5EA9"/>
+                    </svg>
+                      <input type="file" #fileInput hidden (change)="handleFileUpload($event)" />
+
+            </div>
+     
+         
+          </div>
+      
+        <!-- input + زر الإرسال داخل حاوية بيضاء -->
+        <div class="flex items-center flex-1 bg-[#F5F4F8] px-4 py-2 rounded-full gap-2">
+          <input
+          *ngIf="!isRecording"
+            type="text"
+            placeholder="Aa"
+            [(ngModel)]="newMessage"
+            (keydown.enter)="sendMessage()"
+            class="flex-1 bg-transparent text-sm focus:outline-none placeholder-gray-400"
+          />
+          <div *ngIf="isRecording" class="text-center w-full text-xs text-red-500 font-bold mt-1">
+            تسجيل... {{ recordingDuration }}
+          </div>
+          <!-- زر الإرسال (أيقونة سهم) -->
+          <button
+            (click)="sendMessage()"
+            class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm"
+          >
+          <svg width="20" height="20" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.58126 0.567152L20.4913 4.85762C29.1696 7.76083 29.1696 12.4946 20.4913 15.3836L16.6598 16.6564L15.3874 20.4892C12.4994 29.1703 7.75282 29.1703 4.86485 20.4892L0.561493 7.58921C-1.35429 1.79708 1.79102 -1.36356 7.58126 0.567152ZM7.12376 8.26139L12.5566 13.7246C12.771 13.9391 13.0427 14.0392 13.3143 14.0392C13.5859 14.0392 13.8576 13.9391 14.072 13.7246C14.4867 13.3098 14.4867 12.6234 14.072 12.2086L8.63923 6.74542C8.22462 6.33068 7.53837 6.33068 7.12376 6.74542C6.70915 7.16017 6.70915 7.84664 7.12376 8.26139Z" fill="#6E5EA9"/>
+            </svg>
+                      </button>
+        </div>
+      
+     
+        <div  class="flex items-center flex-col gap-1 relative">
+            <span class=" text-xs text-[#6E5EA9]">رسالة صوتية</span>
+            <div  (click)="toggleRecording()" >
+              <button 
+              (click)="toggleRecording()" 
+              [ngClass]="{
+                'bg-red-500': isRecording,
+                'bg-[#F5F4F8]': !isRecording
+              }"
+    class="w-10 h-10 rounded-full flex items-center relative justify-center transition-colors duration-300">
+  
+  
+    
+                                  </button>
+              <img   src="assets/images/Rectangle 7075.png" class="absolute w-[40%] right-5 bottom-2" alt="" srcset="">
+
+            </div>
+      
+
+          </div>
+      </div>
+      <div *ngIf="experts?.data?.consultation?.type=='completed'"  class="p-4 bg-red-200 flex items-center justify-center gap-3">
+          <p>تم انتهاء المحادثه</p>
+           
+               
+                </div>
+
+      
+    </main>
+    <button class="fixed top-18 left-4 z-30 md:hidden bg-[#6E5EA9] text-white w-10 h-10 rounded-full flex items-center justify-center shadow"
+    (click)="showMobileMenu = !showMobileMenu">
+☰
+</button>
+<!-- القائمة المنبثقة للموبايل -->
+<!-- Drawer يظهر من الشمال -->
+<div *ngIf="showMobileMenu" class="fixed inset-0 z-50 bg-black/50 flex md:hidden">
+  <div class="bg-white w-64 h-full shadow-lg p-6 flex flex-col gap-5 relative animate-slide-in-right">
+    <!-- زر إغلاق -->
+    <button (click)="showMobileMenu = false" class="absolute top-2 left-2 text-gray-500 text-xl font-bold">✖</button>
+
+    <!-- صورة الخبير و الاسم -->
+    <div class="flex flex-col items-center">
+      <img [src]="experts?.data?.chat?.consultant.image" class="w-16 h-16 rounded-full mb-1" alt="expert" />
+      <h2 class="font-bold text-sm text-[#231E31] text-center">
+        {{ experts?.data?.chat?.consultant?.name }}
+      </h2>
+    </div>
+
+    <!-- عناصر القائمة -->
+    <div class="flex flex-col items-center text-sm text-[#231E31] gap-4 mt-6">
+      <div
+        [routerLink]="['/expert', experts?.data?.chat?.consultant?.id ]"
+        *ngIf="userdata.type === 'user'"
+        (click)="showMobileMenu = false"
+        class="flex flex-col items-center cursor-pointer"
+      >
+        <img src="assets/images/Ellipse 333.png" class="w-8 h-8" />
+        <span>ملف الخبير</span>
+      </div>
+
+
+      <div (click)="startCall()" class="flex flex-col items-center cursor-pointer">
+        <img src="assets/images/Ellipse 334.png" class="w-8 h-8" />
+        <span>طلب مكالمة</span>
+      </div>
+
+
+      <div class="flex flex-col items-center">
+        <img src="assets/images/Ellipse 338.png" class="w-8 h-8" />
+        <span>إبلاغ أو شكوى</span>
+      </div>
+
+      <button
+        *ngIf="experts?.data?.consultation?.type !== 'completed' && userdata.type !== 'user'"
+        (click)="endChat(); showMobileMenu = false"
+        class="bg-[#991B1B] text-white text-sm px-4 py-2 rounded-full font-semibold mt-4"
+      >
+        إنهاء المحادثة
+      </button>
+    </div>
+  </div>
+</div>
+
+    <!-- معلومات الخبير -->
+    <aside
+    class="w-full md:w-1/6 bg-[#FAFAFA] shadow  flex-col items-center md:py-6 pb-7 order-first md:order-none md:flex hidden"
+  >      
+          <!-- صورة الخبير و الاسم -->
+          <img [src]="experts?.data?.chat?.consultant.image" class="w-16 h-16 rounded-full mb-2" alt="expert" />
+          <h2 class="font-bold text-sm text-[#231E31]">{{ experts?.data?.chat?.consultant?.name }}</h2>
+      
+          <!-- عناصر القائمة -->
+          <div class="flex md:flex-col flex-row items-center justify-center gap-6 mt-10 w-full md:w-auto">
+            <!-- ملف الخبير -->
+            <div 
+              [routerLink]="['/expert', experts?.data?.chat?.consultant?.id ]"
+              *ngIf="userdata.type === 'user'" 
+              class="flex flex-col items-center text-xs text-[#231E31] gap-1"
+            >
+              <img src="assets/images/Ellipse 333.png" class="w-7 h-7" />
+              <span class="hidden md:block">ملف الخبير</span>
+            </div>
+          
+            <!-- طلب مكالمة -->
+       <div (click)="startCall()" class="flex flex-col items-center text-xs text-[#231E31] cursor-pointer">
+  <img src="assets/images/Ellipse 334.png" class="w-8 h-8" />
+  <span>طلب مكالمة</span>
+</div>
+          
+            <!-- إبلاغ أو شكوى -->
+            <div  (click)="showComplaintModal = true" class="flex flex-col items-center text-xs text-[#231E31] gap-1">
+              <img src="assets/images/Ellipse 338.png" class="w-7 h-7" />
+              <span class="hidden md:block">إبلاغ أو شكوى</span>
+            </div>
+          </div>
+  
+      
+          <!-- زر إنهاء المحادثة -->
+    <!-- لأجهزة سطح المكتب (نص + زر) -->
+<button
+*ngIf="experts?.data?.consultation?.type !== 'completed' && userdata.type !== 'user'"
+class="mt-auto bg-[#991B1B] text-white text-sm px-5 py-2 rounded-full font-semibold mb-4 hidden md:block"
+(click)="endChat()"
+>
+طلب إنهاء المحادثة
+</button>
+
+<!-- لأجهزة الموبايل (أيقونة فقط) -->
+<button
+*ngIf="experts?.data?.consultation?.type !== 'completed' && userdata.type !== 'user'"
+class="mt-auto text-[#991B1B] text-xl mb-4 md:hidden"
+(click)="endChat()"
+title="طلب إنهاء المحادثة"
+>
+🛑
+</button>
+
+          <div  *ngIf="showConfirmModal"  class="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg p-6 max-w-md w-full">
+              <h3 class="text-lg font-semibold text-gray-900">هل أنت متأكد من إنهاء المحادثة؟</h3>
+              <p class="mt-2 text-sm text-gray-500">لن تتمكن من العودة إلى هذه المحادثة بعد إنهائها</p>
+              
+              <div class="mt-4 flex justify-end space-x-3">
+                <button 
+                  (click)="onCancel()"
+                  class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                >
+                  إلغاء
+                </button>
+                <button 
+                  (click)="onConfirm()"
+                  class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700"
+                >
+                  نعم، إنهاء المحادثة
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- نافذة التقييم -->
+          <div *ngIf="showRateModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg p-6 max-w-3xl w-full text-center relative">
+              <h2 class="text-2xl font-bold text-gray-800 mb-1">
+                شكرا علي تجربك مع <span class="text-[#6E5EA9]">جدير!</span>
+              </h2>
+              <p class="text-sm text-gray-500 mb-6">
+                نحتاج رأيك لتقييمك لكي يساعدنا علي تطوير الموقع بشكل أسرع
+              </p>
+              <div class="absolute top-4 left-4 md:left-6">
+              <button  (click)="showRateModal = false; completeConsultation()"
+                class="w-8 h-8 rounded-full bg-[#6E5EA9] text-white flex items-center justify-center text-xl font-bold shadow hover:bg-[#5a4e98] transition">
+                  ×
+                </button>
+              </div>
+
+              <hr class="my-4 border-t border-[#000000]" />
+          
+              <h3 class="text-2xl  mb-4">تقييمك</h3>
+              <div class="grid grid-cols-2 md:grid-cols-5 gap-2 mb-4 text-sm font-medium text-gray-700 text-center">
+                <div *ngFor="let option of ratingOptions" class="flex flex-col items-center gap-1">
+              
+                  <!-- الزر -->
+                  <button (click)="rate = option.value"
+                    [ngClass]="rate === option.value 
+                      ? 'bg-[#6E5EA9] text-white border border-black font-bold' 
+                      : 'bg-gray-100 text-gray-800'"
+                    class="px-3 py-2 rounded-md w-full transition-all duration-150">
+                    {{ option.label }}
+                  </button>
+              
+                  <!-- عدد النجوم الثابت -->
+                  <div class="text-base leading-tight">
+                    <ng-container *ngFor="let star of [1,2,3,4,5]">
+                      <span *ngIf="star <= option.value"
+                        [ngClass]="rate === option.value ? 'text-yellow-500' : 'text-gray-300'">
+                        ★
+                      </span>
+                    </ng-container>
+                  </div>
+              
+                </div>
+              </div>
+              
+              
+              
+          
+              <textarea [(ngModel)]="description" rows="10"
+                class="w-full p-3 border-0 bg-[#F2F2F2] rounded-md text-sm  focus:outline-none focus:ring-0 "
+                placeholder="رأيك يهمنا"></textarea>
+          
+              <div class="mt-6 flex justify-center">
+                <button (click)="submitRate()"
+                  class="bg-[#6E5EA9] hover:bg-[#5a4e98] text-white font-semibold px-8 py-2 rounded-md flex items-center gap-2 text-sm">
+                  <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.7882 0.315084L3.61592 2.69868C-1.20531 4.31157 -1.20531 6.94147 3.61592 8.54642L5.74457 9.25356L6.45147 11.3829C8.0559 16.2057 10.6929 16.2057 12.2973 11.3829L14.6881 4.21623C15.7524 0.99838 14.005 -0.757532 10.7882 0.315084ZM11.0424 4.58966L8.02413 7.62477C7.90498 7.74395 7.75407 7.79956 7.60316 7.79956C7.45225 7.79956 7.30134 7.74395 7.1822 7.62477C6.95186 7.39435 6.95186 7.01298 7.1822 6.78257L10.2004 3.74746C10.4308 3.51704 10.812 3.51704 11.0424 3.74746C11.2727 3.97787 11.2727 4.35925 11.0424 4.58966Z" fill="white"/>
+                    </svg>
+                    
+                  إرسال
+                </button>
+              </div>
+            </div>
+          </div>
+          
+      </aside>
+      
+  </div>        <!-- شكوى وإبلاغ Modal -->
+  <div *ngIf="showComplaintModal" class="fixed inset-0 bg-black/50 flex items-center  justify-center z-50">
+    <div class="bg-white rounded-lg p-6 max-w-3xl w-full text-center relative">
+  
+      <!-- زر الإغلاق -->
+      <div class="absolute top-4 left-4">
+        <button (click)="showComplaintModal = false"
+          class="w-7 h-7 rounded-full bg-[#6E5EA9] text-white flex items-center justify-center text-lg font-bold shadow hover:bg-[#5a4e98] transition">
+          ×
+        </button>
+      </div>
+  
+      <!-- العنوان -->
+      <h2 class="text-xl  text-[#231E31] mb-6 text-center">شكوى وإبلاغ</h2>
+  
+      <!-- القائمة المنسدلة -->
+      <select
+      [(ngModel)]="selectedReason"
+      class="relative w-full appearance-none bg-[#F2F2F2] text-right mb-5 text-sm font-semibold py-3 px-4 rounded-md pr-10"
+      style="background-image: url('data:image/svg+xml;utf8,<svg fill=\'%23000000\' height=\'24\' viewBox=\'0 0 24 24\' width=\'24\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>'); background-repeat: no-repeat; background-position: left 0.75rem center; background-size: 1rem;"
+    >
+        <option *ngFor="let reason of complaintReasons" [value]="reason">
+          {{ reason }}
+        </option>
+      </select>
+  
+      <!-- مربع النص -->
+      <textarea [(ngModel)]="complaintText"
+        placeholder="اكتب شكوتك"
+        rows="10"
+        class="w-full bg-[#F2F2F2] p-3 text-sm text-gray-700 border-0 rounded-md focus:outline-none focus:ring-0 placeholder:text-gray-400">
+      </textarea>
+  
+      <!-- زر الإرسال -->
+      <div class="mt-6 flex justify-center">
+        <button (click)="submitComplaint()"
+          class="bg-[#6E5EA9] hover:bg-[#5a4e98] text-white font-semibold px-8 py-2 rounded-md flex items-center gap-2 text-sm">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.01 13L13 7.5 2.01 2 2 6l7 1.5L2 9z" fill="white" />
+          </svg>
+          إرسال
+        </button>
+      </div>
+  
+    </div>
+  </div>
+  

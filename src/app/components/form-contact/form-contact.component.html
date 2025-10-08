@@ -1,0 +1,93 @@
+<div class="max-w-6xl mx-auto p-6 py-8">
+  <div class="text-center mb-6">
+    <button class="bg-gray-900 text-white px-10 py-2 rounded">اتصل بنا</button>
+  </div>
+
+  <form
+    [formGroup]="contactForm"
+    (ngSubmit)="onSubmit()"
+    class="space-y-6 flex flex-col gap-5 pt-10"
+  >
+
+
+  <div class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+      <div class="w-full">
+        <label class="block font-medium mb-2">الاسم الكامل *</label>
+        <input
+          type="text"
+          formControlName="fullName"
+          class="w-full border-b border-gray-400 focus:outline-none"
+          placeholder="مثال: أحمد محمد"
+        />
+        <div *ngIf="isInvalid('fullName')" class="text-red-600 text-sm pt-1">
+          الاسم مطلوب ويجب أن لا يقل عن 3 أحرف.
+        </div>
+      </div>
+      <div class="w-full">
+        <label class="block font-medium mb-2">البريد الإلكتروني *</label>
+        <input
+          type="email"
+          formControlName="email"
+          class="w-full border-b border-gray-400 focus:outline-none"
+          placeholder="info@example.com"
+        />
+        <div *ngIf="isInvalid('email')" class="text-red-600 text-sm pt-1">
+          البريد الإلكتروني غير صالح أو فارغ.
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+      <div class="w-full">
+        <label class="block font-medium mb-2">نوع الطلب *</label>
+        <select
+          formControlName="requestType"
+          class="w-full border-b border-gray-400 bg-transparent focus:outline-none"
+        >
+          <option value="" disabled selected>اختر نوع الطلب</option>
+          <option value="partnership">طلب شراكة أو تعاون</option>
+          <option value="inquiry">استفسار عام أو ملاحظات</option>
+          <option value="consultations">طلب استشارة أو خدمة</option>
+          <option value="complaint">الدعم الفني أو بلاغات الأعطال</option>
+        </select>
+        <div *ngIf="isInvalid('requestType')" class="text-red-600 text-sm pt-1">
+          اختيار نوع الطلب مطلوب.
+        </div>
+      </div>
+      <div class="w-full">
+        <label class="block font-medium mb-2">رقم الجوال *</label>
+        <input
+          type="tel"
+          formControlName="phone"
+          class="w-full border-b text-right border-gray-400 focus:outline-none"
+          placeholder="05xxxxxxxx"
+        />
+        <div *ngIf="isInvalid('phone')" class="text-red-600 text-sm pt-1">
+          أدخل رقم جوال يبدأ بـ 05 ويحتوي على 10 أرقام.
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label class="block font-medium mb-2">رسالتك *</label>
+      <textarea
+        formControlName="message"
+        class="w-full border-b border-gray-400 focus:outline-none"
+        rows="2"
+        placeholder="اكتب رسالتك"
+      ></textarea>
+      <div *ngIf="isInvalid('message')" class="text-red-600 text-sm pt-1">
+        يجب أن تحتوي الرسالة على 10 أحرف على الأقل.
+      </div>
+    </div>
+
+    <div class="text-center pt-4">
+      <button
+        type="submit"
+        class="bg-[#6E5EA9] w-[30%] mx-auto text-white py-2 px-10 rounded hover:bg-purple-700 transition"
+      >
+        إرسال
+      </button>
+    </div>
+  </form>
+</div>

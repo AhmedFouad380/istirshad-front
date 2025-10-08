@@ -1,0 +1,16 @@
+<div *ngIf="isLoading">
+    <app-loading></app-loading>
+  </div>
+
+  <div *ngIf="!isLoading">
+
+    <app-navbar *ngIf="showNavbarAndFooter"></app-navbar>
+
+
+      <router-outlet></router-outlet>
+
+    <app-gradient-section *ngIf="showGradiantsSection"></app-gradient-section>
+
+  <app-footer *ngIf="showNavbarAndFooter"></app-footer>
+  <app-chatbot></app-chatbot>
+</div>
