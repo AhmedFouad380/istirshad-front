@@ -4,7 +4,12 @@
     <!-- التاريخ -->
       <!-- <div class="text-center text-xs text-gray-400 py-2">{{ selectedExpert?.date }}</div> -->
   
-      <div #scrollContainer class="flex-1 px-12 py-8 overflow-y-auto space-y-4 max-h-[100vh]  md:max-h-full">
+      <div #scrollContainer (scroll)="onScroll($event)" class="flex-1 px-12 py-8 overflow-y-scroll space-y-4 h-full" style="overflow-y: scroll;">
+        <!-- Loading indicator for pagination -->
+        <div *ngIf="isLoadingMore" class="text-center py-2">
+          <span class="text-gray-500 text-sm">جاري تحميل المزيد...</span>
+        </div>
+        
         <div *ngFor="let msg of experts?.data?.message?.data; let i = index"
              [ngClass]="msg.alignment"
              class="flex flex-col space-y-1">
@@ -26,23 +31,32 @@
          
           </div>
     
-          <!-- صوت -->
+          <!-- صوت - Modern Voice Message Design -->
           <div *ngIf="msg.audioSrc" class="relative">
-            <audio
-            *ngIf="msg.audioSrc"
-             class="w-full mt-2"
-            controls
-            [src]="msg.audioSrc"
-          >
-            المتصفح لا يدعم تشغيل الصوت.
-          </audio>
+            <div [ngClass]="msg.alignment === 'items-start' ? 'bg-[#6E5EA9]' : 'bg-[#F4F4F4]'" 
+                 class="rounded-xl p-3 max-w-xs shadow-sm">
+              <div class="flex items-center gap-3">
+           
+                
+                <!-- Audio player -->
+                <audio
+                  class="flex-1 h-8"
+                  controls
+                  [src]="msg.audioSrc"
+                  style="filter: brightness(0.9);">
+                  المتصفح لا يدعم تشغيل الصوت.
+                </audio>
+              </div>
+            </div>
             
+            <!-- Status indicators -->
             <span *ngIf="msg.alignment === 'items-end'" class="absolute -right-5 bottom-1 flex items-center">
               <span *ngIf="msg.status === 'sending'" class="text-gray-400 text-xs">...</span>
               <span *ngIf="msg.status === 'success'" class="text-green-500 text-xs">✓</span>
               <span *ngIf="msg.status === 'error'" 
-                    class="text-red-500 text-xs cursor-pointer hover:text-red-700"
-                    (click)="resendMessage(msg)">✗</span>
+                    class="text-red-500 text-xs cursor-pointer hover:text-red-700 transition-colors"
+                    (click)="resendMessage(msg)"
+                    title="إعادة الإرسال">✗</span>
             </span>
           </div>
           
@@ -141,49 +155,94 @@
           </div>
       
         <!-- input + زر الإرسال داخل حاوية بيضاء -->
-        <div class="flex items-center flex-1 bg-[#F5F4F8] px-4 py-2 rounded-full gap-2">
+        <div class="flex items-center flex-1 bg-[#F5F4F8] px-4 py-2 rounded-full gap-2 relative overflow-hidden">
+          <!-- Recording Animation Background -->
+          <div *ngIf="isRecording" 
+               class="absolute inset-0 bg-gradient-to-r from-red-50 via-red-100 to-red-50 animate-pulse">
+          </div>
+          
           <input
           *ngIf="!isRecording"
             type="text"
             placeholder="Aa"
             [(ngModel)]="newMessage"
             (keydown.enter)="sendMessage()"
-            class="flex-1 bg-transparent text-sm focus:outline-none placeholder-gray-400"
+            class="flex-1 bg-transparent text-sm focus:outline-none placeholder-gray-400 relative z-10"
           />
-          <div *ngIf="isRecording" class="text-center w-full text-xs text-red-500 font-bold mt-1">
-            تسجيل... {{ recordingDuration }}
+          
+          <!-- Modern Recording Display -->
+          <div *ngIf="isRecording" class="flex items-center justify-between w-full relative z-10 px-2">
+            <div class="flex items-center gap-3">
+              <!-- Recording Pulse Animation -->
+              <div class="relative flex items-center justify-center">
+                <div class="w-3 h-3 bg-red-500 rounded-full animate-ping absolute"></div>
+                <div class="w-3 h-3 bg-red-600 rounded-full"></div>
+              </div>
+              <span class="text-red-600 text-sm font-semibold">جاري التسجيل</span>
+            </div>
+            
+            <!-- Timer with modern style -->
+            <div class="flex items-center gap-2">
+              <span class="text-red-600 text-base font-mono font-bold">{{ recordingDuration }}</span>
+              <div class="flex gap-1">
+                <div class="w-1 h-6 bg-red-500 rounded-full animate-bounce" style="animation-delay: 0s"></div>
+                <div class="w-1 h-5 bg-red-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                <div class="w-1 h-7 bg-red-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                <div class="w-1 h-4 bg-red-400 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
+              </div>
+            </div>
+            
+            <!-- Cancel Button -->
+            <button 
+              (click)="cancelRecording(); $event.stopPropagation()"
+              class="text-red-600 hover:text-red-800 transition-colors">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
           </div>
+          
           <!-- زر الإرسال (أيقونة سهم) -->
           <button
             (click)="sendMessage()"
-            class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm"
+            [disabled]="isRecording && !audioBlob"
+            class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm hover:shadow-md transition-shadow relative z-10 disabled:opacity-50"
           >
           <svg width="20" height="20" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.58126 0.567152L20.4913 4.85762C29.1696 7.76083 29.1696 12.4946 20.4913 15.3836L16.6598 16.6564L15.3874 20.4892C12.4994 29.1703 7.75282 29.1703 4.86485 20.4892L0.561493 7.58921C-1.35429 1.79708 1.79102 -1.36356 7.58126 0.567152ZM7.12376 8.26139L12.5566 13.7246C12.771 13.9391 13.0427 14.0392 13.3143 14.0392C13.5859 14.0392 13.8576 13.9391 14.072 13.7246C14.4867 13.3098 14.4867 12.6234 14.072 12.2086L8.63923 6.74542C8.22462 6.33068 7.53837 6.33068 7.12376 6.74542C6.70915 7.16017 6.70915 7.84664 7.12376 8.26139Z" fill="#6E5EA9"/>
             </svg>
-                      </button>
+          </button>
         </div>
       
      
-        <div  class="flex items-center flex-col gap-1 relative">
-            <span class=" text-xs text-[#6E5EA9]">رسالة صوتية</span>
-            <div  (click)="toggleRecording()" >
+        <div class="flex items-center flex-col gap-1 relative group">
+            <span class="text-xs text-[#6E5EA9] transition-all group-hover:text-[#5A4A8F]">رسالة صوتية</span>
+            <div class="relative">
               <button 
               (click)="toggleRecording()" 
               [ngClass]="{
-                'bg-red-500': isRecording,
-                'bg-[#F5F4F8]': !isRecording
+                'bg-red-500 scale-110 shadow-lg shadow-red-500/50': isRecording,
+                'bg-[#F5F4F8] hover:bg-[#E5E4F0]': !isRecording
               }"
-    class="w-10 h-10 rounded-full flex items-center relative justify-center transition-colors duration-300">
-  
-  
-    
-                                  </button>
-              <img   src="assets/images/Rectangle 7075.png" class="absolute w-[40%] right-5 bottom-2" alt="" srcset="">
-
+              class="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 relative overflow-hidden">
+                
+                <!-- Microphone Icon (when not recording) -->
+                <svg *ngIf="!isRecording" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 15C13.66 15 15 13.66 15 12V6C15 4.34 13.66 3 12 3C10.34 3 9 4.34 9 6V12C9 13.66 10.34 15 12 15Z" fill="#6E5EA9"/>
+                  <path d="M17 11C17 14.31 14.31 17 11 17C7.69 17 5 14.31 5 11H3C3 14.41 5.72 17.23 9 17.72V21H11V17.72C14.28 17.23 17 14.41 17 11H17Z" fill="#6E5EA9"/>
+                </svg>
+                
+                <!-- Stop Icon (when recording) -->
+                <svg *ngIf="isRecording" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="6" y="6" width="12" height="12" rx="2" fill="white"/>
+                </svg>
+                
+                <!-- Ripple effect when recording -->
+                <div *ngIf="isRecording" class="absolute inset-0 rounded-full bg-red-400 animate-ping opacity-75"></div>
+              </button>
+              
+              <img src="assets/images/Rectangle 7075.png" class="absolute w-[40%] right-5 bottom-2 pointer-events-none" alt="" />
             </div>
-      
-
           </div>
       </div>
       <div *ngIf="experts?.data?.consultation?.type=='completed'"  class="p-4 bg-red-200 flex items-center justify-center gap-3">
@@ -327,7 +386,7 @@ title="طلب إنهاء المحادثة"
           <div *ngIf="showRateModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div class="bg-white rounded-lg p-6 max-w-3xl w-full text-center relative">
               <h2 class="text-2xl font-bold text-gray-800 mb-1">
-                شكرا علي تجربك مع <span class="text-[#6E5EA9]">جدير!</span>
+                شكرا علي تجربك مع <span class="text-[#6E5EA9]">أسترشاد!</span>
               </h2>
               <p class="text-sm text-gray-500 mb-6">
                 نحتاج رأيك لتقييمك لكي يساعدنا علي تطوير الموقع بشكل أسرع
@@ -422,14 +481,30 @@ title="طلب إنهاء المحادثة"
         class="w-full bg-[#F2F2F2] p-3 text-sm text-gray-700 border-0 rounded-md focus:outline-none focus:ring-0 placeholder:text-gray-400">
       </textarea>
   
+      <!-- اختيار ملف (اختياري) -->
+      <div class="mt-4">
+        <label class="flex items-center justify-center gap-2 cursor-pointer bg-[#F2F2F2] hover:bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-md transition">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 17v-6l-2 2m2-2l2 2m8-2v6m0-6l-2 2m2-2l2 2M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>{{ selectedComplaintFile ? selectedComplaintFile.name : 'إرفاق ملف (اختياري)' }}</span>
+          <input type="file" (change)="onComplaintFileSelected($event)" class="hidden" accept="image/*,.pdf,.doc,.docx">
+        </label>
+      </div>
+  
       <!-- زر الإرسال -->
       <div class="mt-6 flex justify-center">
-        <button (click)="submitComplaint()"
-          class="bg-[#6E5EA9] hover:bg-[#5a4e98] text-white font-semibold px-8 py-2 rounded-md flex items-center gap-2 text-sm">
-          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <button 
+          (click)="submitComplaint()"
+          [disabled]="isSubmittingComplaint"
+          [class.opacity-50]="isSubmittingComplaint"
+          [class.cursor-not-allowed]="isSubmittingComplaint"
+          class="bg-[#6E5EA9] hover:bg-[#5a4e98] text-white font-semibold px-8 py-2 rounded-md flex items-center gap-2 text-sm transition">
+          <svg *ngIf="!isSubmittingComplaint" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M2.01 13L13 7.5 2.01 2 2 6l7 1.5L2 9z" fill="white" />
           </svg>
-          إرسال
+          <span *ngIf="isSubmittingComplaint" class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+          {{ isSubmittingComplaint ? 'جاري الإرسال...' : 'إرسال' }}
         </button>
       </div>
   

@@ -188,14 +188,30 @@
         class="w-full bg-[#F2F2F2] p-3 text-sm text-gray-700 border-0 rounded-md focus:outline-none focus:ring-0 placeholder:text-gray-400">
       </textarea>
   
+      <!-- اختيار ملف (اختياري) -->
+      <div class="mt-4">
+        <label class="flex items-center justify-center gap-2 cursor-pointer bg-[#F2F2F2] hover:bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-md transition">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 17v-6l-2 2m2-2l2 2m8-2v6m0-6l-2 2m2-2l2 2M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>{{ selectedFile ? selectedFile.name : 'إرفاق ملف (اختياري)' }}</span>
+          <input type="file" (change)="onFileSelected($event)" class="hidden" accept="image/*,.pdf,.doc,.docx">
+        </label>
+      </div>
+  
       <!-- زر الإرسال -->
       <div class="mt-6 flex justify-center">
-        <button (click)="submitComplaint()"
-          class="bg-[#6E5EA9] hover:bg-[#5a4e98] text-white font-semibold px-8 py-2 rounded-md flex items-center gap-2 text-sm">
-          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <button 
+          (click)="submitComplaint()"
+          [disabled]="isSubmitting"
+          [class.opacity-50]="isSubmitting"
+          [class.cursor-not-allowed]="isSubmitting"
+          class="bg-[#6E5EA9] hover:bg-[#5a4e98] text-white font-semibold px-8 py-2 rounded-md flex items-center gap-2 text-sm transition">
+          <svg *ngIf="!isSubmitting" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M2.01 13L13 7.5 2.01 2 2 6l7 1.5L2 9z" fill="white" />
           </svg>
-          إرسال
+          <span *ngIf="isSubmitting" class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+          {{ isSubmitting ? 'جاري الإرسال...' : 'إرسال' }}
         </button>
       </div>
   

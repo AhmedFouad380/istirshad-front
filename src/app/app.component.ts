@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
-import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { CommonModule } from '@angular/common';
 import { GradientSectionComponent } from './components/gradient-section/gradient-section.component';
 import { ViewportScroller } from '@angular/common'; // ⭐ استورد ViewportScroller
-import { filter } from 'rxjs/operators'; // ⭐ استورد filter عشان تشتغل أنظف
 import { SettingsService } from './services/settings.service';
 import { Title } from '@angular/platform-browser';
 import { LoadingComponent } from "./shared/loading/loading.component"; // 👑 استورد Title للتحكم في العنوان
@@ -20,8 +18,7 @@ import { HomeService } from './services/home.service';
     FooterComponent,
     CommonModule,
     GradientSectionComponent,
-    LoadingComponent,
-    ChatbotComponent,
+    LoadingComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

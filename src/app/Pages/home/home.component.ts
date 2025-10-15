@@ -10,7 +10,6 @@ import { HomeconsultingSectionComponent } from "../../components/homeconsulting-
 import { CommonModule } from '@angular/common';
 import { LoadingComponent } from "../../shared/loading/loading.component";
 import { HomeService } from '../../services/home.service';
-import { FieldsSectionComponent } from "../../components/fields-section/fields-section.component";
 
 @Component({
   selector: 'app-home',
@@ -22,8 +21,7 @@ import { FieldsSectionComponent } from "../../components/fields-section/fields-s
     HomeMainComponent,
     CommonModule,
     HomeconsultingSectionComponent,
-    LoadingComponent,
-    FieldsSectionComponent
+    LoadingComponent
 ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',

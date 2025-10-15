@@ -38,7 +38,21 @@ export class ReportService {
       .pipe(catchError(this.handleError.bind(this)));
   }
 
-  // 👿 معالجة الأخطاء
+  // � إرسال شكوى/تقرير
+  storeReport(formData: FormData): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    });
+    // Note: Don't set Content-Type for FormData, browser will set it automatically with boundary
+    
+    return this.http
+      .post(`${this.baseUrl}store-report`, formData, { headers })
+      .pipe(catchError(this.handleError.bind(this)));
+  }
+
+  // �👿 معالجة الأخطاء
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'حدث خطأ غير متوقع';
     if (error.error instanceof ErrorEvent) {

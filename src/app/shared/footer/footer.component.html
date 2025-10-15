@@ -3,22 +3,22 @@
 
     <!-- بيانات الشركة -->
 <div class="md:col-span-4 flex flex-col items-start md:items-start text-right">
-      <img [src]="settings?.logo || 'assets/images/logo.png'" alt="جدير" class="w-32 md:w-[40%]" />
+      <img [src]="settings.logo || 'assets/images/logo.png'" alt="أسترشاد" class="w-32 md:w-[40%]" />
       <p class="text-sm text-[#231E31] max-w-sm leading-6 mt-4">
-        {{ settings?.short_description }}
+        {{ settings.short_description }}
       </p>
 
       <div class="flex flex-col mt-4 text-[#231E31] font-bold space-y-3">
         <div class="flex items-center gap-2 justify-center md:justify-start">
           <!-- Phone Icon -->
           <!-- ... SVG ... -->
-          <span dir="ltr">{{ settings?.phone }}</span>
+          <span dir="ltr">{{ settings.phone }}</span>
         </div>
 
         <div class="flex items-center gap-2 justify-center md:justify-start">
           <!-- Email Icon -->
           <!-- ... SVG ... -->
-          <span>{{ settings?.email }}</span>
+          <span>{{ settings.email }}</span>
         </div>
       </div>
 
@@ -26,7 +26,7 @@
       <div class="flex items-center justify-center md:justify-start gap-3 pt-5">
    
        <div class="p-2 border-2 *:border-[#6E5EA9] rounded-full group hover:bg-[#6E5EA9] hover:text-white transition">
-          <a href="{{ settings?.instagram }}" target="_blank" class="text-[#6E5EA9] group-hover:text-white hover:text-white">
+          <a href="{{ settings.instagram }}" target="_blank" class="text-[#6E5EA9] group-hover:text-white hover:text-white">
    <svg width="20" height="21" viewBox="0 0 25 26" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M22.8049 0.55584H2.57001C2.34255 0.552515 2.1167 0.59638 1.90535 0.68493C1.694 0.77348 1.50129 0.90498 1.33823 1.07192C1.17518 1.23886 1.04496 1.43797 0.955029 1.65788C0.865095 1.87779 0.817203 2.11419 0.814087 2.35358V23.9014C0.817203 24.1408 0.865095 24.3772 0.955029 24.5971C1.04496 24.817 1.17518 25.0161 1.33823 25.183C1.50129 25.35 1.694 25.4815 1.90535 25.57C2.1167 25.6586 2.34255 25.7024 2.57001 25.6991H22.8049C23.0324 25.7024 23.2582 25.6586 23.4696 25.57C23.6809 25.4815 23.8736 25.35 24.0367 25.183C24.1998 25.0161 24.33 24.817 24.4199 24.5971C24.5098 24.3772 24.5577 24.1408 24.5609 23.9014V2.35358C24.5577 2.11419 24.5098 1.87779 24.4199 1.65788C24.33 1.43797 24.1998 1.23886 24.0367 1.07192C23.8736 0.90498 23.6809 0.77348 23.4696 0.68493C23.2582 0.59638 23.0324 0.552515 22.8049 0.55584ZM8.01695 21.6008H4.43344V10.2863H8.01695V21.6008ZM6.2252 8.70226C5.98049 8.70226 5.73817 8.65154 5.51209 8.55298C5.28601 8.45442 5.08059 8.30996 4.90755 8.12785C4.73452 7.94574 4.59726 7.72954 4.50361 7.4916C4.40997 7.25366 4.36177 6.99863 4.36177 6.74109C4.36177 6.48354 4.40997 6.22852 4.50361 5.99058C4.59726 5.75264 4.73452 5.53644 4.90755 5.35433C5.08059 5.17221 5.28601 5.02775 5.51209 4.9292C5.73817 4.83064 5.98049 4.77991 6.2252 4.77991C6.48762 4.74859 6.75338 4.77596 7.00506 4.86022C7.25674 4.94449 7.48867 5.08376 7.68567 5.2689C7.88266 5.45404 8.04028 5.68089 8.14819 5.93459C8.25611 6.18829 8.3119 6.46312 8.3119 6.74109C8.3119 7.01905 8.25611 7.29388 8.14819 7.54758C8.04028 7.80128 7.88266 8.02813 7.68567 8.21327C7.48867 8.39842 7.25674 8.53768 7.00506 8.62195C6.75338 8.70622 6.48762 8.73358 6.2252 8.70226ZM20.9415 21.6008H17.358V15.5287C17.358 14.0075 16.8443 13.0143 15.5423 13.0143C15.1394 13.0174 14.747 13.1505 14.4181 13.3955C14.0892 13.6405 13.8396 13.9857 13.7028 14.3846C13.6093 14.6801 13.5688 14.9913 13.5833 15.3024V21.5882H9.99983C9.99983 21.5882 9.99983 11.3046 9.99983 10.2737H13.5833V11.8703C13.9089 11.2758 14.3824 10.786 14.9528 10.4537C15.5232 10.1215 16.1689 9.95924 16.8205 9.98457C19.2095 9.98457 20.9415 11.6063 20.9415 15.0887V21.6008Z" fill="#6E5EA9"/>
 </svg>          </a>
@@ -34,7 +34,7 @@
 
        </div>
        <div class="p-2 border-2 *:border-[#6E5EA9] rounded-full hover:bg-[#6E5EA9] group hover:text-white transition">
-          <a href="{{ settings?.instagram }}" target="_blank" class="text-[#6E5EA9] group-hover:text-white hover:text-white">
+          <a href="{{ settings.instagram }}" target="_blank" class="text-[#6E5EA9] group-hover:text-white hover:text-white">
   <svg width="20" height="21" viewBox="0 0 16 27" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M12.728 4.56494H15.5083V0.345003C14.1621 0.219396 12.8095 0.157383 11.4561 0.159219C7.43357 0.159219 4.68286 2.36208 4.68286 6.39623V9.87303H0.1427V14.5972H4.68286V26.6997H10.1251V14.5972H14.6505L15.3308 9.87303H10.1251V6.86069C10.1251 5.46731 10.5392 4.56494 12.728 4.56494Z" fill="#6E5EA9"/>
 </svg>
@@ -42,8 +42,8 @@
      
 
        </div>
-   <a href="{{ settings?.twitter }}"  class="p-2 border-2 border-[#6E5EA9] rounded-full group transition hover:bg-[#6E5EA9] hover:text-white">
-  <a href="{{ settings?.twitter }}" target="_blank" 
+   <a href="{{ settings.twitter }}"  class="p-2 border-2 border-[#6E5EA9] rounded-full group transition hover:bg-[#6E5EA9] hover:text-white">
+  <a href="{{ settings.twitter }}" target="_blank" 
      class="text-[#6E5EA9] group-hover:text-white flex items-center justify-center">
     <svg width="20" height="21" viewBox="0 0 27 26" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M21.2641 0.0712891H25.4043L16.3592 10.661L27 25.0713H18.6683L12.1427 16.3315L4.67581 25.0713H0.533167L10.2077 13.7444L0 0.0712891H8.54315L14.4418 8.05975L21.2641 0.0712891ZM19.811 22.5328H22.1051L7.29659 2.47642H4.83476L19.811 22.5328Z" fill="currentColor"/>
@@ -98,7 +98,7 @@
   <!-- الروابط السفلية -->
   <div class="border-t border-[#00000045] pt-6 pb-4 mt-4">
     <div class="text-center text-sm text-[#231E31]">
-      جدير - جميع الحقوق محفوظة © 2024
+      أسترشاد - جميع الحقوق محفوظة © 2024
     </div>
   </div>
 </footer>

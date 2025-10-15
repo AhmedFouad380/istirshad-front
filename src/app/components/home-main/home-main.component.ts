@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
 type Slide = {
-  title: string; // الجزء المتغير بعد "جدير"
+  title: string; // الجزء المتغير بعد "أسترشاد"
   description: string; // الوصف
   action: string;
   buttonText: string; // نص الزر
@@ -26,7 +26,7 @@ export class HomeMainComponent implements OnInit, OnDestroy {
     {
       title: 'تحتاج استشارة متخصصة؟',
       description:
-        'في جدير تجد نخبة من الخبراء المتطوعين في مجالات متعددة: الإدارة، الحوكمة، التقنية، القانون، الموارد البشرية، المالية، الإعلام، الأوقاف، الجودة وغيرها.أكثر من 250 خبيرًا وأكثر من 3800 مستخدم',
+        'في أسترشاد تجد نخبة من الخبراء المتطوعين في مجالات متعددة: الإدارة، الحوكمة، التقنية، القانون، الموارد البشرية، المالية، الإعلام، الأوقاف، الجودة وغيرها.أكثر من 250 خبيرًا وأكثر من 3800 مستخدم',
       buttonText: 'ابدأ الآن',
       buttonLink: '/Consulting_areas',
       action: 'link',
@@ -36,7 +36,7 @@ export class HomeMainComponent implements OnInit, OnDestroy {
     {
       title: 'خبراء من كل مكان في خدمتك',
       description:
-        'جدير منصة رقمية وتطبيق جوال يقدم خدمات استشارية موجّهة للأفراد والجمعيات الأهلية عبر ربطهم بخبراء متطوعين من مختلف مناطق المملكة.',
+        'أسترشاد منصة رقمية وتطبيق جوال يقدم خدمات استشارية موجّهة للأفراد والجمعيات الأهلية عبر ربطهم بخبراء متطوعين من مختلف مناطق المملكة.',
       buttonText: 'احصل على استشارتك',
       buttonLink: '/Consulting_areas',
       action: 'link',

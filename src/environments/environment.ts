@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://gadeer.tanami.org.sa/api/',
-  apiBaseUrlConsultant: 'https://gadeer.tanami.org.sa/consultant/',
+  apiBaseUrl: 'https://www.back.estirshad.com/api/',
+  apiBaseUrlConsultant: 'https://www.back.estirshad.com/consultant/',
   pusher: {
     key: 'ab784e6ee42989dd21c3',
     cluster: 'eu',

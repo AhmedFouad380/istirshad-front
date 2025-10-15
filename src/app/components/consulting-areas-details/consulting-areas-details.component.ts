@@ -72,7 +72,7 @@ export class ConsultingAreasDetailsComponent implements OnInit {
       this.toaster.error('برجاء ادخال جميع البيانات');
       return;
     }
-    this.isSubmitting = true; // يبدأ اللودينج
+    this.isSubmitting = true;
 
     const formData = {
       title: this.consultationTitle,
@@ -83,18 +83,19 @@ export class ConsultingAreasDetailsComponent implements OnInit {
 
     this.consultationsService.storeConsultation(formData).subscribe({
       next: (response) => {
+        this.toaster.success('تم إرسال الاستشارة بنجاح');
         this.closeModal();
         this.selectedExperts = [];
-        this.toaster.success('برجاء ادخال جميع البيانات');
+        this.consultationTitle = '';
+        this.consultationDescription = '';
       },
       error: (err) => {
-        if (err.status === 401) {
-          localStorage.setItem('redirectUrl', this.router.url);
-          this.router.navigate(['/Auth/Individual_login']);
-        }
+        // Error is already handled by the interceptor
+        // You can add component-specific error handling here if needed
+        console.error('Error submitting consultation:', err);
       },
       complete: () => {
-        this.isSubmitting = false; // يوقف اللودينج بعد الانتهاء
+        this.isSubmitting = false;
       },
     });
   }

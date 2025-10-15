@@ -58,17 +58,14 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public",
-                "output": "/public"
+                "input": "public"
               },
               {
                 "glob": "**/*",
-                "input": "src/assets/images",
-                "output": "/assets/images"
-              }
-              ,
+                "input": "src/assets",
+                "output": "assets"
+              },
               "src/firebase-messaging-sw.js"
-
             ],
             "allowedCommonJsDependencies": [
   "@zegocloud/zego-uikit-prebuilt",
@@ -86,8 +83,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2.5MB",
-                  "maximumError": "6.5MB"
+                  "maximumWarning": "7MB",
+                  "maximumError": "10MB"
                 },
                 {
                   "type": "anyComponentStyle",
