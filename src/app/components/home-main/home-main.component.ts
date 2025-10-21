@@ -34,7 +34,7 @@ export class HomeMainComponent implements OnInit, OnDestroy {
       image: 'assets/images/main.png',
     },
     {
-      title: 'خبراء من كل مكان في خدمتك',
+      title: 'خبراء في خدمتك',
       description:
         'أسترشاد منصة رقمية وتطبيق جوال يقدم خدمات استشارية موجّهة للأفراد والجمعيات الأهلية عبر ربطهم بخبراء متطوعين من مختلف مناطق المملكة.',
       buttonText: 'احصل على استشارتك',
