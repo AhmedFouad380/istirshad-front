@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './footer.component.css',
 })
 export class FooterComponent {
-  settings!: SettingsData;
+  settings: SettingsData | null = null;
 
   constructor(private settingsService: SettingsService) {}
 
